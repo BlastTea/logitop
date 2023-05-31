@@ -450,9 +450,6 @@ namespace Logitop
             textBoxReportChange.Text = (transaction.pay - total).ToString();
         }
 
-        private void OnButtonSearchWeatherClick(object sender, EventArgs e)
-        {
-            RequestWeatherApi(comboBoxUnit.Text);
-        }
+        private void OnButtonSearchWeatherClick(object sender, EventArgs e) => RequestWeatherApi(comboBoxUnit.Text);
     }
 }
