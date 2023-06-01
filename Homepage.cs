@@ -16,8 +16,6 @@ namespace Logitop
         private List<Transaction> Transactions = new List<Transaction>();
         private List<DetailTransaction> DetailTransactions = new List<DetailTransaction>();
 
-        private Dictionary<string, dynamic> weatherData = new Dictionary<string, dynamic>();
-
         public Homepage()
         {
             InitializeComponent();
@@ -27,13 +25,27 @@ namespace Logitop
             ReadTransactionData();
             SetTransactionState();
             RequestWeatherApi(null);
+
+            comboBoxPrinter.Items.Clear();
+            foreach (string printer in Printing.GetAvailablePrinters())
+            {
+                comboBoxPrinter.Items.Add(printer);
+            }
+            comboBoxPrinter.Text = Printing.GetCurrentPrinter();
+
+            comboBoxPaperSize.Items.Clear();
+            foreach (string paperSize in Printing.GetAvailablePaperSizes())
+            {
+                comboBoxPaperSize.Items.Add(paperSize);
+            }
+            comboBoxPaperSize.Text = Printing.GetCurrentPaperSize();
         }
 
         private void ReadLaptopData()
         {
             Laptops.Clear();
 
-            DataTable laptops = DbHelper.GetInstance().Read(Global.TableLaptop, Global.ColumnLaptopId);
+            DataTable laptops = DbHelper.GetInstance().ExecuteQuery($"SELECT * FROM {Global.TableLaptop} WHERE {Global.ColumnLaptopIsDeleted} = false ORDER BY {Global.ColumnLaptopId}");
             foreach (DataRow dr in laptops.Rows)
             {
                 Laptop laptop = Laptop.FromDataRow(dr);
@@ -136,6 +148,7 @@ namespace Logitop
             textBoxLaptopPrice.Text = "";
             textBoxLaptopStock.Text = "0";
             CurrentIdLaptop = null;
+            buttonDelete.Enabled = false;
         }
 
         private void ClearShoppingCarts()
@@ -157,52 +170,11 @@ namespace Logitop
 
         private async void RequestWeatherApi(string? unit)
         {
-            string degreeUnit = "metric";
+            Dictionary<string, dynamic>? weatherData = await WeatherAPI.CurrentWeatherData(textBoxSearchWeather.Text, unit);
 
-            if (unit != null)
+            if (weatherData == null)
             {
-                switch (unit)
-                {
-                    case "Kelvin":
-                        degreeUnit = string.Empty;
-                        break;
-                    case "Fahrenheit":
-                        degreeUnit = "imperial";
-                        break;
-                    default:
-                        degreeUnit = "metric";
-                        break;
-                }
-            }
-
-            if (!string.IsNullOrEmpty(degreeUnit))
-            {
-                degreeUnit = "&units=" + degreeUnit;
-            }
-
-            string uriString = $"https://api.openweathermap.org/data/2.5/weather?q={textBoxSearchWeather.Text}&appid={Global.OpenWheatherMapApiKey}{degreeUnit}";
-
-            HttpClient client = new HttpClient();
-
-            HttpResponseMessage response = await client.GetAsync(uriString);
-            try
-            {
-                response.EnsureSuccessStatusCode();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
-            }
-
-            string responseBody = await response.Content.ReadAsStringAsync();
-
-            JsonDocument jsonDocument = JsonDocument.Parse(responseBody);
-
-            weatherData.Clear();
-            foreach (JsonProperty property in jsonDocument.RootElement.EnumerateObject())
-            {
-                weatherData.Add(property.Name, GetJsonValue(property.Value));
             }
 
             labelLatitudeValue.Text = weatherData["coord"]["lat"].ToString();
@@ -229,50 +201,32 @@ namespace Logitop
             labelCloudinessValue.Text = $"{weatherData["clouds"]["all"]} %";
         }
 
-        private object GetJsonValue(JsonElement element)
-        {
-            switch (element.ValueKind)
-            {
-                case JsonValueKind.Object:
-                    Dictionary<string, object> obj = new Dictionary<string, object>();
-                    foreach (JsonProperty property in element.EnumerateObject())
-                    {
-                        obj.Add(property.Name, GetJsonValue(property.Value));
-                    }
-                    return obj;
-
-                case JsonValueKind.Array:
-                    List<object> array = new List<object>();
-                    foreach (JsonElement arrayElement in element.EnumerateArray())
-                    {
-                        array.Add(GetJsonValue(arrayElement));
-                    }
-                    return array;
-
-                case JsonValueKind.String:
-                    return element.GetString()!;
-
-                case JsonValueKind.Number:
-                    return element.GetDouble()!;
-
-                case JsonValueKind.True:
-                    return true;
-
-                case JsonValueKind.False:
-                    return false;
-
-                default:
-                    throw new NotSupportedException("Unsupported JSON value kind " + element.ValueKind);
-            }
-        }
-
         private void OnTextBoxLaptopPriceKeyPressed(object sender, KeyPressEventArgs e) => e.Handled = !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
 
         private void OnTextBoxLaptopStockKeyPressed(object sender, KeyPressEventArgs e) => e.Handled = !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
 
         private void OnButtonClearLaptopClick(object sender, EventArgs e) => ClearCurrentLaptopEditing();
 
-        private void OnButtonDeleteLaptopClick(object sender, EventArgs e) => MessageBox.Show("Perlu fitur hapus tidak ya?", "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        private void OnButtonDeleteLaptopClick(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show($"Apakah Anda yakin ingin menghapus {Laptops.Where((e) => e.Id == CurrentIdLaptop).Single().Name}?", "Konfirmasi penghapusan", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+            if (result == DialogResult.No)
+            {
+                return;
+            }
+
+            int affectedRows = DbHelper.GetInstance().ExecuteNonQuery($"UPDATE {Global.TableLaptop} SET {Global.ColumnLaptopIsDeleted} = true WHERE {Global.ColumnLaptopId} = {CurrentIdLaptop}");
+
+            if (affectedRows > 0)
+            {
+                ReadLaptopData();
+                SetLaptopState();
+                ClearCurrentLaptopEditing();
+                return;
+            }
+            MessageBox.Show("Gagal pada saat menghapus laptop!", "Data gagal dihapus", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
 
         private void OnButtonSaveLaptopClick(object sender, EventArgs e)
         {
@@ -296,7 +250,7 @@ namespace Logitop
             int price = int.Parse(textBoxLaptopPrice.Text.Trim());
             int stock = int.Parse(textBoxLaptopStock.Text.Trim());
 
-            int affectedRows = 0;
+            int affectedRows;
             if (CurrentIdLaptop == null)
             {
                 affectedRows = DbHelper.GetInstance().Create(Global.TableLaptop, new Laptop(0, name, price, stock).ToJson());
@@ -305,11 +259,11 @@ namespace Logitop
             {
                 affectedRows = DbHelper.GetInstance().Update(Global.TableLaptop, new Laptop(0, name, price, stock).ToJson(), Global.ColumnLaptopId, CurrentIdLaptop!);
             }
-            ReadLaptopData();
-            SetLaptopState();
 
             if (affectedRows > 0)
             {
+                ReadLaptopData();
+                SetLaptopState();
                 ClearCurrentLaptopEditing();
                 return;
             }
@@ -326,6 +280,8 @@ namespace Logitop
                 textBoxLaptopName.Text = laptop.Name;
                 textBoxLaptopPrice.Text = laptop.Price.ToString();
                 textBoxLaptopStock.Text = laptop.Stock.ToString();
+
+                buttonDelete.Enabled = true;
             }
         }
 
@@ -411,14 +367,19 @@ namespace Logitop
             DataTable transactionTables = DbHelper.GetInstance().Read(Global.TableTransaction, Global.ColumnTransactionId);
             newTransaction.Id = (int)transactionTables.Rows[transactionTables.Rows.Count - 1][Global.ColumnTransactionId];
 
+            List<DetailTransaction> detailTransactions = new List<DetailTransaction>();
+
             foreach (int idLaptop in CurrentShoppingCarts.Keys)
             {
                 Laptop theLaptop = Laptops.Where((e) => e.Id == idLaptop).Single();
                 DetailTransaction newDetailTransaction = new DetailTransaction(0, newTransaction, theLaptop, CurrentShoppingCarts[idLaptop]);
+                detailTransactions.Add(newDetailTransaction);
 
                 DbHelper.GetInstance().Create(Global.TableDetailTransaction, newDetailTransaction.ToJson());
                 DbHelper.GetInstance().Update(Global.TableLaptop, theLaptop.ToJson(), Global.ColumnLaptopId, theLaptop.Id);
             }
+
+            Printing.Print(new PrintingArgumentsTransaction(newTransaction, detailTransactions));
 
             ClearShoppingCarts();
             ReadLaptopData();
@@ -451,5 +412,14 @@ namespace Logitop
         }
 
         private void OnButtonSearchWeatherClick(object sender, EventArgs e) => RequestWeatherApi(comboBoxUnit.Text);
+
+        private void OnComboBoxPrinterSelectedIndexChanged(object sender, EventArgs e) => Printing.SetCurrentPrinter(comboBoxPrinter.Text);
+
+        private void OnComboBoxPaperSizeSelectedIndexChanged(object sender, EventArgs e) => Printing.SetCurrentPaperSize(comboBoxPaperSize.Text);
+
+        private void OnButtonTestPrintClick(object sender, EventArgs e)
+        {
+            Printing.Print(new PrintingArgumentsMessage("Hello World"));
+        }
     }
 }

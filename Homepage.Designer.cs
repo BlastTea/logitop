@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             dataGridLaptop = new DataGridView();
-            laptop_name = new DataGridViewTextBoxColumn();
-            laptop_price = new DataGridViewTextBoxColumn();
-            stock = new DataGridViewTextBoxColumn();
+            columnLaptopLaptopName = new DataGridViewTextBoxColumn();
+            columnLaptopLaptopPrice = new DataGridViewTextBoxColumn();
+            columnLaptopLaptopStock = new DataGridViewTextBoxColumn();
             buttonSaveLaptop = new Button();
             tabControlHome = new TabControl();
             tabLaptop = new TabPage();
@@ -45,10 +45,10 @@
             buttonDelete = new Button();
             tabTransaksi = new TabPage();
             dataGridLaptopTransaction = new DataGridView();
-            dataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
-            dataGridViewTextBoxColumn3 = new DataGridViewTextBoxColumn();
-            dataGridViewTextBoxColumn4 = new DataGridViewTextBoxColumn();
-            add_to_transaction = new DataGridViewButtonColumn();
+            columnTransactionLaptopName = new DataGridViewTextBoxColumn();
+            columnTransactionLaptopPrice = new DataGridViewTextBoxColumn();
+            columnTransactionLaptopStock = new DataGridViewTextBoxColumn();
+            columnTransactionAction = new DataGridViewButtonColumn();
             buttonTransactionPay = new Button();
             textBoxTransactionChange = new TextBox();
             textBoxTransactionPay = new TextBox();
@@ -57,10 +57,10 @@
             labelTotalTransaction = new Label();
             textBoxTransactionTotal = new TextBox();
             dataGridShoppingCart = new DataGridView();
-            laptop_name_transaction = new DataGridViewTextBoxColumn();
-            laptop_price_transaction = new DataGridViewTextBoxColumn();
-            laptop_amount_transaction = new DataGridViewTextBoxColumn();
-            remove_item_transaction = new DataGridViewButtonColumn();
+            columnShoppingCartLaptopName = new DataGridViewTextBoxColumn();
+            columnShoppingCartLaptopPrice = new DataGridViewTextBoxColumn();
+            columnShoppingCartLaptopAmount = new DataGridViewTextBoxColumn();
+            columnShoppingCartAction = new DataGridViewButtonColumn();
             tabLaporan = new TabPage();
             textBoxReportChange = new TextBox();
             labelReportChange = new Label();
@@ -69,13 +69,22 @@
             textBoxReportTotal = new TextBox();
             labelReportTotal = new Label();
             dataGridViewReportDetailTransaction = new DataGridView();
-            dataGridViewTextBoxColumn7 = new DataGridViewTextBoxColumn();
-            dataGridViewTextBoxColumn8 = new DataGridViewTextBoxColumn();
-            dataGridViewTextBoxColumn9 = new DataGridViewTextBoxColumn();
+            columnReportItemTransactionLaptopName = new DataGridViewTextBoxColumn();
+            columnReportItemTransactionLaptopPrice = new DataGridViewTextBoxColumn();
+            columnReportItemTransactionLaptopAmount = new DataGridViewTextBoxColumn();
             dataGridReportTransaction = new DataGridView();
-            id_report_transaction = new DataGridViewTextBoxColumn();
-            date_report_transaction = new DataGridViewTextBoxColumn();
+            columnReportIdTransaction = new DataGridViewTextBoxColumn();
+            columnReportDateTransaction = new DataGridViewTextBoxColumn();
             tabWeatherApi = new TabPage();
+            labelCloudinessValue = new Label();
+            labelCloudiness = new Label();
+            labelWindGustValue = new Label();
+            labelWindGust = new Label();
+            labelWindDegreeValue = new Label();
+            labelWindDegree = new Label();
+            labelWindSpeedValue = new Label();
+            labelWindSpeed = new Label();
+            labelWind = new Label();
             labelVisibilityValue = new Label();
             labelVisibility = new Label();
             labelGroundPressureValue = new Label();
@@ -107,15 +116,11 @@
             textBoxSearchWeather = new TextBox();
             labelCityName = new Label();
             tabPengaturan = new TabPage();
-            labelWind = new Label();
-            labelWindSpeed = new Label();
-            labelWindSpeedValue = new Label();
-            labelWindDegree = new Label();
-            labelWindDegreeValue = new Label();
-            labelWindGust = new Label();
-            labelWindGustValue = new Label();
-            labelCloudiness = new Label();
-            labelCloudinessValue = new Label();
+            comboBoxPaperSize = new ComboBox();
+            labelPaperSize = new Label();
+            comboBoxPrinter = new ComboBox();
+            labelPrinter = new Label();
+            buttonTestPrint = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridLaptop).BeginInit();
             tabControlHome.SuspendLayout();
             tabLaptop.SuspendLayout();
@@ -126,6 +131,7 @@
             ((System.ComponentModel.ISupportInitialize)dataGridViewReportDetailTransaction).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridReportTransaction).BeginInit();
             tabWeatherApi.SuspendLayout();
+            tabPengaturan.SuspendLayout();
             SuspendLayout();
             // 
             // dataGridLaptop
@@ -136,8 +142,9 @@
             dataGridLaptop.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridLaptop.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridLaptop.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridLaptop.Columns.AddRange(new DataGridViewColumn[] { laptop_name, laptop_price, stock });
-            dataGridLaptop.Location = new Point(3, 3);
+            dataGridLaptop.Columns.AddRange(new DataGridViewColumn[] { columnLaptopLaptopName, columnLaptopLaptopPrice, columnLaptopLaptopStock });
+            dataGridLaptop.Location = new Point(4, 4);
+            dataGridLaptop.Margin = new Padding(4);
             dataGridLaptop.MultiSelect = false;
             dataGridLaptop.Name = "dataGridLaptop";
             dataGridLaptop.ReadOnly = true;
@@ -146,41 +153,42 @@
             dataGridLaptop.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dataGridLaptop.RowTemplate.Height = 29;
             dataGridLaptop.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridLaptop.Size = new Size(801, 534);
+            dataGridLaptop.Size = new Size(1001, 668);
             dataGridLaptop.TabIndex = 0;
             dataGridLaptop.CellDoubleClick += OnDataGridLaptopCellDoubleClick;
             // 
-            // laptop_name
+            // columnLaptopLaptopName
             // 
-            laptop_name.HeaderText = "Nama Laptop";
-            laptop_name.MinimumWidth = 6;
-            laptop_name.Name = "laptop_name";
-            laptop_name.ReadOnly = true;
-            laptop_name.Resizable = DataGridViewTriState.True;
-            laptop_name.SortMode = DataGridViewColumnSortMode.NotSortable;
+            columnLaptopLaptopName.HeaderText = "Nama Laptop";
+            columnLaptopLaptopName.MinimumWidth = 6;
+            columnLaptopLaptopName.Name = "columnLaptopLaptopName";
+            columnLaptopLaptopName.ReadOnly = true;
+            columnLaptopLaptopName.Resizable = DataGridViewTriState.True;
+            columnLaptopLaptopName.SortMode = DataGridViewColumnSortMode.NotSortable;
             // 
-            // laptop_price
+            // columnLaptopLaptopPrice
             // 
-            laptop_price.HeaderText = "Harga Laptop";
-            laptop_price.MinimumWidth = 6;
-            laptop_price.Name = "laptop_price";
-            laptop_price.ReadOnly = true;
-            laptop_price.SortMode = DataGridViewColumnSortMode.NotSortable;
+            columnLaptopLaptopPrice.HeaderText = "Harga Laptop";
+            columnLaptopLaptopPrice.MinimumWidth = 6;
+            columnLaptopLaptopPrice.Name = "columnLaptopLaptopPrice";
+            columnLaptopLaptopPrice.ReadOnly = true;
+            columnLaptopLaptopPrice.SortMode = DataGridViewColumnSortMode.NotSortable;
             // 
-            // stock
+            // columnLaptopLaptopStock
             // 
-            stock.HeaderText = "Stok";
-            stock.MinimumWidth = 6;
-            stock.Name = "stock";
-            stock.ReadOnly = true;
-            stock.SortMode = DataGridViewColumnSortMode.NotSortable;
+            columnLaptopLaptopStock.HeaderText = "Stok";
+            columnLaptopLaptopStock.MinimumWidth = 6;
+            columnLaptopLaptopStock.Name = "columnLaptopLaptopStock";
+            columnLaptopLaptopStock.ReadOnly = true;
+            columnLaptopLaptopStock.SortMode = DataGridViewColumnSortMode.NotSortable;
             // 
             // buttonSaveLaptop
             // 
             buttonSaveLaptop.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            buttonSaveLaptop.Location = new Point(1022, 503);
+            buttonSaveLaptop.Location = new Point(1278, 629);
+            buttonSaveLaptop.Margin = new Padding(4);
             buttonSaveLaptop.Name = "buttonSaveLaptop";
-            buttonSaveLaptop.Size = new Size(100, 29);
+            buttonSaveLaptop.Size = new Size(125, 36);
             buttonSaveLaptop.TabIndex = 1;
             buttonSaveLaptop.Text = "Simpan";
             buttonSaveLaptop.UseVisualStyleBackColor = true;
@@ -195,9 +203,10 @@
             tabControlHome.Controls.Add(tabPengaturan);
             tabControlHome.Dock = DockStyle.Fill;
             tabControlHome.Location = new Point(0, 0);
+            tabControlHome.Margin = new Padding(4);
             tabControlHome.Name = "tabControlHome";
             tabControlHome.SelectedIndex = 0;
-            tabControlHome.Size = new Size(1138, 573);
+            tabControlHome.Size = new Size(1422, 716);
             tabControlHome.TabIndex = 2;
             // 
             // tabLaptop
@@ -212,10 +221,11 @@
             tabLaptop.Controls.Add(buttonDelete);
             tabLaptop.Controls.Add(buttonSaveLaptop);
             tabLaptop.Controls.Add(dataGridLaptop);
-            tabLaptop.Location = new Point(4, 29);
+            tabLaptop.Location = new Point(4, 34);
+            tabLaptop.Margin = new Padding(4);
             tabLaptop.Name = "tabLaptop";
-            tabLaptop.Padding = new Padding(3);
-            tabLaptop.Size = new Size(1130, 540);
+            tabLaptop.Padding = new Padding(4);
+            tabLaptop.Size = new Size(1414, 678);
             tabLaptop.TabIndex = 0;
             tabLaptop.Text = "Laptop";
             tabLaptop.UseVisualStyleBackColor = true;
@@ -223,9 +233,10 @@
             // textBoxLaptopStock
             // 
             textBoxLaptopStock.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            textBoxLaptopStock.Location = new Point(810, 132);
+            textBoxLaptopStock.Location = new Point(1012, 165);
+            textBoxLaptopStock.Margin = new Padding(4);
             textBoxLaptopStock.Name = "textBoxLaptopStock";
-            textBoxLaptopStock.Size = new Size(312, 27);
+            textBoxLaptopStock.Size = new Size(389, 31);
             textBoxLaptopStock.TabIndex = 9;
             textBoxLaptopStock.Text = "0";
             textBoxLaptopStock.KeyPress += OnTextBoxLaptopStockKeyPressed;
@@ -234,18 +245,20 @@
             // 
             labelLaptopStock.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             labelLaptopStock.AutoSize = true;
-            labelLaptopStock.Location = new Point(810, 109);
+            labelLaptopStock.Location = new Point(1012, 136);
+            labelLaptopStock.Margin = new Padding(4, 0, 4, 0);
             labelLaptopStock.Name = "labelLaptopStock";
-            labelLaptopStock.Size = new Size(38, 20);
+            labelLaptopStock.Size = new Size(47, 25);
             labelLaptopStock.TabIndex = 8;
             labelLaptopStock.Text = "Stok";
             // 
             // textBoxLaptopPrice
             // 
             textBoxLaptopPrice.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            textBoxLaptopPrice.Location = new Point(810, 79);
+            textBoxLaptopPrice.Location = new Point(1012, 99);
+            textBoxLaptopPrice.Margin = new Padding(4);
             textBoxLaptopPrice.Name = "textBoxLaptopPrice";
-            textBoxLaptopPrice.Size = new Size(312, 27);
+            textBoxLaptopPrice.Size = new Size(389, 31);
             textBoxLaptopPrice.TabIndex = 7;
             textBoxLaptopPrice.KeyPress += OnTextBoxLaptopPriceKeyPressed;
             // 
@@ -253,9 +266,10 @@
             // 
             labelLaptopPrice.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             labelLaptopPrice.AutoSize = true;
-            labelLaptopPrice.Location = new Point(810, 56);
+            labelLaptopPrice.Location = new Point(1012, 70);
+            labelLaptopPrice.Margin = new Padding(4, 0, 4, 0);
             labelLaptopPrice.Name = "labelLaptopPrice";
-            labelLaptopPrice.Size = new Size(101, 20);
+            labelLaptopPrice.Size = new Size(121, 25);
             labelLaptopPrice.TabIndex = 6;
             labelLaptopPrice.Text = "Harga Laptop";
             // 
@@ -263,26 +277,29 @@
             // 
             labelLaptopName.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             labelLaptopName.AutoSize = true;
-            labelLaptopName.Location = new Point(810, 3);
+            labelLaptopName.Location = new Point(1012, 4);
+            labelLaptopName.Margin = new Padding(4, 0, 4, 0);
             labelLaptopName.Name = "labelLaptopName";
-            labelLaptopName.Size = new Size(100, 20);
+            labelLaptopName.Size = new Size(120, 25);
             labelLaptopName.TabIndex = 5;
             labelLaptopName.Text = "Nama Laptop";
             // 
             // textBoxLaptopName
             // 
             textBoxLaptopName.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            textBoxLaptopName.Location = new Point(810, 26);
+            textBoxLaptopName.Location = new Point(1012, 32);
+            textBoxLaptopName.Margin = new Padding(4);
             textBoxLaptopName.Name = "textBoxLaptopName";
-            textBoxLaptopName.Size = new Size(312, 27);
+            textBoxLaptopName.Size = new Size(389, 31);
             textBoxLaptopName.TabIndex = 4;
             // 
             // buttonClear
             // 
             buttonClear.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            buttonClear.Location = new Point(810, 503);
+            buttonClear.Location = new Point(1012, 629);
+            buttonClear.Margin = new Padding(4);
             buttonClear.Name = "buttonClear";
-            buttonClear.Size = new Size(100, 29);
+            buttonClear.Size = new Size(125, 36);
             buttonClear.TabIndex = 3;
             buttonClear.Text = "Bersihkan";
             buttonClear.UseVisualStyleBackColor = true;
@@ -291,9 +308,11 @@
             // buttonDelete
             // 
             buttonDelete.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            buttonDelete.Location = new Point(916, 503);
+            buttonDelete.Enabled = false;
+            buttonDelete.Location = new Point(1145, 629);
+            buttonDelete.Margin = new Padding(4);
             buttonDelete.Name = "buttonDelete";
-            buttonDelete.Size = new Size(100, 29);
+            buttonDelete.Size = new Size(125, 36);
             buttonDelete.TabIndex = 2;
             buttonDelete.Text = "Hapus";
             buttonDelete.UseVisualStyleBackColor = true;
@@ -310,10 +329,11 @@
             tabTransaksi.Controls.Add(labelTotalTransaction);
             tabTransaksi.Controls.Add(textBoxTransactionTotal);
             tabTransaksi.Controls.Add(dataGridShoppingCart);
-            tabTransaksi.Location = new Point(4, 29);
+            tabTransaksi.Location = new Point(4, 34);
+            tabTransaksi.Margin = new Padding(4);
             tabTransaksi.Name = "tabTransaksi";
-            tabTransaksi.Padding = new Padding(3);
-            tabTransaksi.Size = new Size(1130, 540);
+            tabTransaksi.Padding = new Padding(4);
+            tabTransaksi.Size = new Size(1414, 678);
             tabTransaksi.TabIndex = 1;
             tabTransaksi.Text = "Transaksi";
             tabTransaksi.UseVisualStyleBackColor = true;
@@ -325,8 +345,9 @@
             dataGridLaptopTransaction.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridLaptopTransaction.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridLaptopTransaction.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridLaptopTransaction.Columns.AddRange(new DataGridViewColumn[] { dataGridViewTextBoxColumn2, dataGridViewTextBoxColumn3, dataGridViewTextBoxColumn4, add_to_transaction });
-            dataGridLaptopTransaction.Location = new Point(3, 3);
+            dataGridLaptopTransaction.Columns.AddRange(new DataGridViewColumn[] { columnTransactionLaptopName, columnTransactionLaptopPrice, columnTransactionLaptopStock, columnTransactionAction });
+            dataGridLaptopTransaction.Location = new Point(4, 4);
+            dataGridLaptopTransaction.Margin = new Padding(4);
             dataGridLaptopTransaction.MultiSelect = false;
             dataGridLaptopTransaction.Name = "dataGridLaptopTransaction";
             dataGridLaptopTransaction.ReadOnly = true;
@@ -334,50 +355,51 @@
             dataGridLaptopTransaction.RowHeadersWidth = 51;
             dataGridLaptopTransaction.RowTemplate.Height = 29;
             dataGridLaptopTransaction.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridLaptopTransaction.Size = new Size(679, 534);
+            dataGridLaptopTransaction.Size = new Size(849, 668);
             dataGridLaptopTransaction.TabIndex = 9;
             dataGridLaptopTransaction.CellContentClick += OnDataGridLaptopTransactionCellContentClick;
             // 
-            // dataGridViewTextBoxColumn2
+            // columnTransactionLaptopName
             // 
-            dataGridViewTextBoxColumn2.HeaderText = "Nama Laptop";
-            dataGridViewTextBoxColumn2.MinimumWidth = 6;
-            dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            dataGridViewTextBoxColumn2.ReadOnly = true;
-            dataGridViewTextBoxColumn2.SortMode = DataGridViewColumnSortMode.NotSortable;
+            columnTransactionLaptopName.HeaderText = "Nama Laptop";
+            columnTransactionLaptopName.MinimumWidth = 6;
+            columnTransactionLaptopName.Name = "columnTransactionLaptopName";
+            columnTransactionLaptopName.ReadOnly = true;
+            columnTransactionLaptopName.SortMode = DataGridViewColumnSortMode.NotSortable;
             // 
-            // dataGridViewTextBoxColumn3
+            // columnTransactionLaptopPrice
             // 
-            dataGridViewTextBoxColumn3.HeaderText = "Harga Laptop";
-            dataGridViewTextBoxColumn3.MinimumWidth = 6;
-            dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
-            dataGridViewTextBoxColumn3.ReadOnly = true;
-            dataGridViewTextBoxColumn3.SortMode = DataGridViewColumnSortMode.NotSortable;
+            columnTransactionLaptopPrice.HeaderText = "Harga Laptop";
+            columnTransactionLaptopPrice.MinimumWidth = 6;
+            columnTransactionLaptopPrice.Name = "columnTransactionLaptopPrice";
+            columnTransactionLaptopPrice.ReadOnly = true;
+            columnTransactionLaptopPrice.SortMode = DataGridViewColumnSortMode.NotSortable;
             // 
-            // dataGridViewTextBoxColumn4
+            // columnTransactionLaptopStock
             // 
-            dataGridViewTextBoxColumn4.HeaderText = "Stok";
-            dataGridViewTextBoxColumn4.MinimumWidth = 6;
-            dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
-            dataGridViewTextBoxColumn4.ReadOnly = true;
-            dataGridViewTextBoxColumn4.SortMode = DataGridViewColumnSortMode.NotSortable;
+            columnTransactionLaptopStock.HeaderText = "Stok";
+            columnTransactionLaptopStock.MinimumWidth = 6;
+            columnTransactionLaptopStock.Name = "columnTransactionLaptopStock";
+            columnTransactionLaptopStock.ReadOnly = true;
+            columnTransactionLaptopStock.SortMode = DataGridViewColumnSortMode.NotSortable;
             // 
-            // add_to_transaction
+            // columnTransactionAction
             // 
-            add_to_transaction.HeaderText = "Aksi";
-            add_to_transaction.MinimumWidth = 6;
-            add_to_transaction.Name = "add_to_transaction";
-            add_to_transaction.ReadOnly = true;
-            add_to_transaction.Text = "Tambah";
-            add_to_transaction.ToolTipText = "Tambah Laptop ke keranjang";
+            columnTransactionAction.HeaderText = "Aksi";
+            columnTransactionAction.MinimumWidth = 6;
+            columnTransactionAction.Name = "columnTransactionAction";
+            columnTransactionAction.ReadOnly = true;
+            columnTransactionAction.Text = "Tambah";
+            columnTransactionAction.ToolTipText = "Tambah Laptop ke keranjang";
             // 
             // buttonTransactionPay
             // 
             buttonTransactionPay.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             buttonTransactionPay.AutoSize = true;
-            buttonTransactionPay.Location = new Point(688, 502);
+            buttonTransactionPay.Location = new Point(860, 621);
+            buttonTransactionPay.Margin = new Padding(4);
             buttonTransactionPay.Name = "buttonTransactionPay";
-            buttonTransactionPay.Size = new Size(434, 30);
+            buttonTransactionPay.Size = new Size(542, 44);
             buttonTransactionPay.TabIndex = 8;
             buttonTransactionPay.Text = "Bayar";
             buttonTransactionPay.UseVisualStyleBackColor = true;
@@ -386,18 +408,20 @@
             // textBoxTransactionChange
             // 
             textBoxTransactionChange.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            textBoxTransactionChange.Location = new Point(688, 470);
+            textBoxTransactionChange.Location = new Point(860, 588);
+            textBoxTransactionChange.Margin = new Padding(4);
             textBoxTransactionChange.Name = "textBoxTransactionChange";
             textBoxTransactionChange.ReadOnly = true;
-            textBoxTransactionChange.Size = new Size(434, 27);
+            textBoxTransactionChange.Size = new Size(542, 31);
             textBoxTransactionChange.TabIndex = 7;
             // 
             // textBoxTransactionPay
             // 
             textBoxTransactionPay.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            textBoxTransactionPay.Location = new Point(688, 417);
+            textBoxTransactionPay.Location = new Point(860, 521);
+            textBoxTransactionPay.Margin = new Padding(4);
             textBoxTransactionPay.Name = "textBoxTransactionPay";
-            textBoxTransactionPay.Size = new Size(434, 27);
+            textBoxTransactionPay.Size = new Size(542, 31);
             textBoxTransactionPay.TabIndex = 6;
             textBoxTransactionPay.TextChanged += OnTextBoxTransactionPayTextChanged;
             textBoxTransactionPay.KeyPress += OnTextBoxTransactionPayKeyPressed;
@@ -406,9 +430,10 @@
             // 
             labelTransactionChange.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             labelTransactionChange.AutoSize = true;
-            labelTransactionChange.Location = new Point(688, 447);
+            labelTransactionChange.Location = new Point(860, 559);
+            labelTransactionChange.Margin = new Padding(4, 0, 4, 0);
             labelTransactionChange.Name = "labelTransactionChange";
-            labelTransactionChange.Size = new Size(64, 20);
+            labelTransactionChange.Size = new Size(75, 25);
             labelTransactionChange.TabIndex = 5;
             labelTransactionChange.Text = "Kembali";
             // 
@@ -416,9 +441,10 @@
             // 
             labelPayTransaction.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             labelPayTransaction.AutoSize = true;
-            labelPayTransaction.Location = new Point(688, 394);
+            labelPayTransaction.Location = new Point(860, 492);
+            labelPayTransaction.Margin = new Padding(4, 0, 4, 0);
             labelPayTransaction.Name = "labelPayTransaction";
-            labelPayTransaction.Size = new Size(46, 20);
+            labelPayTransaction.Size = new Size(55, 25);
             labelPayTransaction.TabIndex = 4;
             labelPayTransaction.Text = "Bayar";
             // 
@@ -426,19 +452,21 @@
             // 
             labelTotalTransaction.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             labelTotalTransaction.AutoSize = true;
-            labelTotalTransaction.Location = new Point(688, 341);
+            labelTotalTransaction.Location = new Point(860, 426);
+            labelTotalTransaction.Margin = new Padding(4, 0, 4, 0);
             labelTotalTransaction.Name = "labelTotalTransaction";
-            labelTotalTransaction.Size = new Size(42, 20);
+            labelTotalTransaction.Size = new Size(49, 25);
             labelTotalTransaction.TabIndex = 3;
             labelTotalTransaction.Text = "Total";
             // 
             // textBoxTransactionTotal
             // 
             textBoxTransactionTotal.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            textBoxTransactionTotal.Location = new Point(688, 364);
+            textBoxTransactionTotal.Location = new Point(860, 455);
+            textBoxTransactionTotal.Margin = new Padding(4);
             textBoxTransactionTotal.Name = "textBoxTransactionTotal";
             textBoxTransactionTotal.ReadOnly = true;
-            textBoxTransactionTotal.Size = new Size(434, 27);
+            textBoxTransactionTotal.Size = new Size(542, 31);
             textBoxTransactionTotal.TabIndex = 2;
             // 
             // dataGridShoppingCart
@@ -448,8 +476,9 @@
             dataGridShoppingCart.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
             dataGridShoppingCart.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridShoppingCart.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridShoppingCart.Columns.AddRange(new DataGridViewColumn[] { laptop_name_transaction, laptop_price_transaction, laptop_amount_transaction, remove_item_transaction });
-            dataGridShoppingCart.Location = new Point(688, 4);
+            dataGridShoppingCart.Columns.AddRange(new DataGridViewColumn[] { columnShoppingCartLaptopName, columnShoppingCartLaptopPrice, columnShoppingCartLaptopAmount, columnShoppingCartAction });
+            dataGridShoppingCart.Location = new Point(860, 5);
+            dataGridShoppingCart.Margin = new Padding(4);
             dataGridShoppingCart.MultiSelect = false;
             dataGridShoppingCart.Name = "dataGridShoppingCart";
             dataGridShoppingCart.ReadOnly = true;
@@ -457,43 +486,43 @@
             dataGridShoppingCart.RowHeadersWidth = 51;
             dataGridShoppingCart.RowTemplate.Height = 29;
             dataGridShoppingCart.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridShoppingCart.Size = new Size(438, 334);
+            dataGridShoppingCart.Size = new Size(548, 418);
             dataGridShoppingCart.TabIndex = 1;
             dataGridShoppingCart.CellContentClick += OnDataGridShoppingCardCellContentClick;
             // 
-            // laptop_name_transaction
+            // columnShoppingCartLaptopName
             // 
-            laptop_name_transaction.HeaderText = "Nama Laptop";
-            laptop_name_transaction.MinimumWidth = 6;
-            laptop_name_transaction.Name = "laptop_name_transaction";
-            laptop_name_transaction.ReadOnly = true;
-            laptop_name_transaction.SortMode = DataGridViewColumnSortMode.NotSortable;
+            columnShoppingCartLaptopName.HeaderText = "Nama Laptop";
+            columnShoppingCartLaptopName.MinimumWidth = 6;
+            columnShoppingCartLaptopName.Name = "columnShoppingCartLaptopName";
+            columnShoppingCartLaptopName.ReadOnly = true;
+            columnShoppingCartLaptopName.SortMode = DataGridViewColumnSortMode.NotSortable;
             // 
-            // laptop_price_transaction
+            // columnShoppingCartLaptopPrice
             // 
-            laptop_price_transaction.HeaderText = "Harga Laptop";
-            laptop_price_transaction.MinimumWidth = 6;
-            laptop_price_transaction.Name = "laptop_price_transaction";
-            laptop_price_transaction.ReadOnly = true;
-            laptop_price_transaction.SortMode = DataGridViewColumnSortMode.NotSortable;
+            columnShoppingCartLaptopPrice.HeaderText = "Harga Laptop";
+            columnShoppingCartLaptopPrice.MinimumWidth = 6;
+            columnShoppingCartLaptopPrice.Name = "columnShoppingCartLaptopPrice";
+            columnShoppingCartLaptopPrice.ReadOnly = true;
+            columnShoppingCartLaptopPrice.SortMode = DataGridViewColumnSortMode.NotSortable;
             // 
-            // laptop_amount_transaction
+            // columnShoppingCartLaptopAmount
             // 
-            laptop_amount_transaction.HeaderText = "Jumlah";
-            laptop_amount_transaction.MinimumWidth = 6;
-            laptop_amount_transaction.Name = "laptop_amount_transaction";
-            laptop_amount_transaction.ReadOnly = true;
-            laptop_amount_transaction.SortMode = DataGridViewColumnSortMode.NotSortable;
+            columnShoppingCartLaptopAmount.HeaderText = "Jumlah";
+            columnShoppingCartLaptopAmount.MinimumWidth = 6;
+            columnShoppingCartLaptopAmount.Name = "columnShoppingCartLaptopAmount";
+            columnShoppingCartLaptopAmount.ReadOnly = true;
+            columnShoppingCartLaptopAmount.SortMode = DataGridViewColumnSortMode.NotSortable;
             // 
-            // remove_item_transaction
+            // columnShoppingCartAction
             // 
-            remove_item_transaction.HeaderText = "Aksi";
-            remove_item_transaction.MinimumWidth = 6;
-            remove_item_transaction.Name = "remove_item_transaction";
-            remove_item_transaction.ReadOnly = true;
-            remove_item_transaction.Resizable = DataGridViewTriState.True;
-            remove_item_transaction.Text = "Hapus";
-            remove_item_transaction.ToolTipText = "Hapus Barang dari Transaksi";
+            columnShoppingCartAction.HeaderText = "Aksi";
+            columnShoppingCartAction.MinimumWidth = 6;
+            columnShoppingCartAction.Name = "columnShoppingCartAction";
+            columnShoppingCartAction.ReadOnly = true;
+            columnShoppingCartAction.Resizable = DataGridViewTriState.True;
+            columnShoppingCartAction.Text = "Hapus";
+            columnShoppingCartAction.ToolTipText = "Hapus Barang dari Transaksi";
             // 
             // tabLaporan
             // 
@@ -505,9 +534,10 @@
             tabLaporan.Controls.Add(labelReportTotal);
             tabLaporan.Controls.Add(dataGridViewReportDetailTransaction);
             tabLaporan.Controls.Add(dataGridReportTransaction);
-            tabLaporan.Location = new Point(4, 29);
+            tabLaporan.Location = new Point(4, 34);
+            tabLaporan.Margin = new Padding(4);
             tabLaporan.Name = "tabLaporan";
-            tabLaporan.Size = new Size(1130, 540);
+            tabLaporan.Size = new Size(1414, 678);
             tabLaporan.TabIndex = 2;
             tabLaporan.Text = "Laporan";
             tabLaporan.UseVisualStyleBackColor = true;
@@ -515,57 +545,63 @@
             // textBoxReportChange
             // 
             textBoxReportChange.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            textBoxReportChange.Location = new Point(688, 470);
+            textBoxReportChange.Location = new Point(860, 588);
+            textBoxReportChange.Margin = new Padding(4);
             textBoxReportChange.Name = "textBoxReportChange";
             textBoxReportChange.ReadOnly = true;
-            textBoxReportChange.Size = new Size(434, 27);
+            textBoxReportChange.Size = new Size(542, 31);
             textBoxReportChange.TabIndex = 17;
             // 
             // labelReportChange
             // 
             labelReportChange.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             labelReportChange.AutoSize = true;
-            labelReportChange.Location = new Point(688, 447);
+            labelReportChange.Location = new Point(860, 559);
+            labelReportChange.Margin = new Padding(4, 0, 4, 0);
             labelReportChange.Name = "labelReportChange";
-            labelReportChange.Size = new Size(64, 20);
+            labelReportChange.Size = new Size(75, 25);
             labelReportChange.TabIndex = 16;
             labelReportChange.Text = "Kembali";
             // 
             // textBoxReportPay
             // 
             textBoxReportPay.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            textBoxReportPay.Location = new Point(688, 417);
+            textBoxReportPay.Location = new Point(860, 521);
+            textBoxReportPay.Margin = new Padding(4);
             textBoxReportPay.Name = "textBoxReportPay";
             textBoxReportPay.ReadOnly = true;
-            textBoxReportPay.Size = new Size(434, 27);
+            textBoxReportPay.Size = new Size(542, 31);
             textBoxReportPay.TabIndex = 15;
             // 
             // labelReportPay
             // 
             labelReportPay.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             labelReportPay.AutoSize = true;
-            labelReportPay.Location = new Point(688, 394);
+            labelReportPay.Location = new Point(860, 492);
+            labelReportPay.Margin = new Padding(4, 0, 4, 0);
             labelReportPay.Name = "labelReportPay";
-            labelReportPay.Size = new Size(46, 20);
+            labelReportPay.Size = new Size(55, 25);
             labelReportPay.TabIndex = 14;
             labelReportPay.Text = "Bayar";
             // 
             // textBoxReportTotal
             // 
             textBoxReportTotal.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            textBoxReportTotal.Location = new Point(688, 364);
+            textBoxReportTotal.Location = new Point(860, 455);
+            textBoxReportTotal.Margin = new Padding(4);
             textBoxReportTotal.Name = "textBoxReportTotal";
             textBoxReportTotal.ReadOnly = true;
-            textBoxReportTotal.Size = new Size(434, 27);
+            textBoxReportTotal.Size = new Size(542, 31);
             textBoxReportTotal.TabIndex = 13;
             // 
             // labelReportTotal
             // 
             labelReportTotal.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             labelReportTotal.AutoSize = true;
-            labelReportTotal.Location = new Point(688, 341);
+            labelReportTotal.Location = new Point(860, 426);
+            labelReportTotal.Margin = new Padding(4, 0, 4, 0);
             labelReportTotal.Name = "labelReportTotal";
-            labelReportTotal.Size = new Size(42, 20);
+            labelReportTotal.Size = new Size(49, 25);
             labelReportTotal.TabIndex = 12;
             labelReportTotal.Text = "Total";
             // 
@@ -576,8 +612,9 @@
             dataGridViewReportDetailTransaction.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
             dataGridViewReportDetailTransaction.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridViewReportDetailTransaction.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewReportDetailTransaction.Columns.AddRange(new DataGridViewColumn[] { dataGridViewTextBoxColumn7, dataGridViewTextBoxColumn8, dataGridViewTextBoxColumn9 });
-            dataGridViewReportDetailTransaction.Location = new Point(688, 4);
+            dataGridViewReportDetailTransaction.Columns.AddRange(new DataGridViewColumn[] { columnReportItemTransactionLaptopName, columnReportItemTransactionLaptopPrice, columnReportItemTransactionLaptopAmount });
+            dataGridViewReportDetailTransaction.Location = new Point(860, 5);
+            dataGridViewReportDetailTransaction.Margin = new Padding(4);
             dataGridViewReportDetailTransaction.MultiSelect = false;
             dataGridViewReportDetailTransaction.Name = "dataGridViewReportDetailTransaction";
             dataGridViewReportDetailTransaction.ReadOnly = true;
@@ -585,32 +622,32 @@
             dataGridViewReportDetailTransaction.RowHeadersWidth = 51;
             dataGridViewReportDetailTransaction.RowTemplate.Height = 29;
             dataGridViewReportDetailTransaction.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridViewReportDetailTransaction.Size = new Size(438, 334);
+            dataGridViewReportDetailTransaction.Size = new Size(548, 418);
             dataGridViewReportDetailTransaction.TabIndex = 11;
             // 
-            // dataGridViewTextBoxColumn7
+            // columnReportItemTransactionLaptopName
             // 
-            dataGridViewTextBoxColumn7.HeaderText = "Nama Laptop";
-            dataGridViewTextBoxColumn7.MinimumWidth = 6;
-            dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
-            dataGridViewTextBoxColumn7.ReadOnly = true;
-            dataGridViewTextBoxColumn7.SortMode = DataGridViewColumnSortMode.NotSortable;
+            columnReportItemTransactionLaptopName.HeaderText = "Nama Laptop";
+            columnReportItemTransactionLaptopName.MinimumWidth = 6;
+            columnReportItemTransactionLaptopName.Name = "columnReportItemTransactionLaptopName";
+            columnReportItemTransactionLaptopName.ReadOnly = true;
+            columnReportItemTransactionLaptopName.SortMode = DataGridViewColumnSortMode.NotSortable;
             // 
-            // dataGridViewTextBoxColumn8
+            // columnReportItemTransactionLaptopPrice
             // 
-            dataGridViewTextBoxColumn8.HeaderText = "Harga Laptop";
-            dataGridViewTextBoxColumn8.MinimumWidth = 6;
-            dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
-            dataGridViewTextBoxColumn8.ReadOnly = true;
-            dataGridViewTextBoxColumn8.SortMode = DataGridViewColumnSortMode.NotSortable;
+            columnReportItemTransactionLaptopPrice.HeaderText = "Harga Laptop";
+            columnReportItemTransactionLaptopPrice.MinimumWidth = 6;
+            columnReportItemTransactionLaptopPrice.Name = "columnReportItemTransactionLaptopPrice";
+            columnReportItemTransactionLaptopPrice.ReadOnly = true;
+            columnReportItemTransactionLaptopPrice.SortMode = DataGridViewColumnSortMode.NotSortable;
             // 
-            // dataGridViewTextBoxColumn9
+            // columnReportItemTransactionLaptopAmount
             // 
-            dataGridViewTextBoxColumn9.HeaderText = "Jumlah";
-            dataGridViewTextBoxColumn9.MinimumWidth = 6;
-            dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
-            dataGridViewTextBoxColumn9.ReadOnly = true;
-            dataGridViewTextBoxColumn9.SortMode = DataGridViewColumnSortMode.NotSortable;
+            columnReportItemTransactionLaptopAmount.HeaderText = "Jumlah";
+            columnReportItemTransactionLaptopAmount.MinimumWidth = 6;
+            columnReportItemTransactionLaptopAmount.Name = "columnReportItemTransactionLaptopAmount";
+            columnReportItemTransactionLaptopAmount.ReadOnly = true;
+            columnReportItemTransactionLaptopAmount.SortMode = DataGridViewColumnSortMode.NotSortable;
             // 
             // dataGridReportTransaction
             // 
@@ -619,8 +656,9 @@
             dataGridReportTransaction.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridReportTransaction.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridReportTransaction.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridReportTransaction.Columns.AddRange(new DataGridViewColumn[] { id_report_transaction, date_report_transaction });
-            dataGridReportTransaction.Location = new Point(3, 3);
+            dataGridReportTransaction.Columns.AddRange(new DataGridViewColumn[] { columnReportIdTransaction, columnReportDateTransaction });
+            dataGridReportTransaction.Location = new Point(4, 4);
+            dataGridReportTransaction.Margin = new Padding(4);
             dataGridReportTransaction.MultiSelect = false;
             dataGridReportTransaction.Name = "dataGridReportTransaction";
             dataGridReportTransaction.ReadOnly = true;
@@ -628,25 +666,25 @@
             dataGridReportTransaction.RowHeadersWidth = 51;
             dataGridReportTransaction.RowTemplate.Height = 29;
             dataGridReportTransaction.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridReportTransaction.Size = new Size(679, 534);
+            dataGridReportTransaction.Size = new Size(849, 668);
             dataGridReportTransaction.TabIndex = 10;
             dataGridReportTransaction.SelectionChanged += OnDataGridReportTransactionSelectionChanged;
             // 
-            // id_report_transaction
+            // columnReportIdTransaction
             // 
-            id_report_transaction.HeaderText = "Id Transaksi";
-            id_report_transaction.MinimumWidth = 6;
-            id_report_transaction.Name = "id_report_transaction";
-            id_report_transaction.ReadOnly = true;
-            id_report_transaction.SortMode = DataGridViewColumnSortMode.NotSortable;
+            columnReportIdTransaction.HeaderText = "Id Transaksi";
+            columnReportIdTransaction.MinimumWidth = 6;
+            columnReportIdTransaction.Name = "columnReportIdTransaction";
+            columnReportIdTransaction.ReadOnly = true;
+            columnReportIdTransaction.SortMode = DataGridViewColumnSortMode.NotSortable;
             // 
-            // date_report_transaction
+            // columnReportDateTransaction
             // 
-            date_report_transaction.HeaderText = "Tanggal";
-            date_report_transaction.MinimumWidth = 6;
-            date_report_transaction.Name = "date_report_transaction";
-            date_report_transaction.ReadOnly = true;
-            date_report_transaction.SortMode = DataGridViewColumnSortMode.NotSortable;
+            columnReportDateTransaction.HeaderText = "Tanggal";
+            columnReportDateTransaction.MinimumWidth = 6;
+            columnReportDateTransaction.Name = "columnReportDateTransaction";
+            columnReportDateTransaction.ReadOnly = true;
+            columnReportDateTransaction.SortMode = DataGridViewColumnSortMode.NotSortable;
             // 
             // tabWeatherApi
             // 
@@ -689,91 +727,191 @@
             tabWeatherApi.Controls.Add(buttonSearchWeather);
             tabWeatherApi.Controls.Add(textBoxSearchWeather);
             tabWeatherApi.Controls.Add(labelCityName);
-            tabWeatherApi.Location = new Point(4, 29);
+            tabWeatherApi.Location = new Point(4, 34);
+            tabWeatherApi.Margin = new Padding(4);
             tabWeatherApi.Name = "tabWeatherApi";
-            tabWeatherApi.Size = new Size(1130, 540);
+            tabWeatherApi.Size = new Size(1414, 678);
             tabWeatherApi.TabIndex = 3;
             tabWeatherApi.Text = "Weather API?";
             tabWeatherApi.UseVisualStyleBackColor = true;
             // 
+            // labelCloudinessValue
+            // 
+            labelCloudinessValue.AutoSize = true;
+            labelCloudinessValue.Location = new Point(131, 541);
+            labelCloudinessValue.Margin = new Padding(4, 0, 4, 0);
+            labelCloudinessValue.Name = "labelCloudinessValue";
+            labelCloudinessValue.Size = new Size(40, 25);
+            labelCloudinessValue.TabIndex = 38;
+            labelCloudinessValue.Text = "null";
+            // 
+            // labelCloudiness
+            // 
+            labelCloudiness.AutoSize = true;
+            labelCloudiness.Location = new Point(30, 541);
+            labelCloudiness.Margin = new Padding(4, 0, 4, 0);
+            labelCloudiness.Name = "labelCloudiness";
+            labelCloudiness.Size = new Size(93, 25);
+            labelCloudiness.TabIndex = 37;
+            labelCloudiness.Text = "Mendung:";
+            // 
+            // labelWindGustValue
+            // 
+            labelWindGustValue.AutoSize = true;
+            labelWindGustValue.Location = new Point(182, 516);
+            labelWindGustValue.Margin = new Padding(4, 0, 4, 0);
+            labelWindGustValue.Name = "labelWindGustValue";
+            labelWindGustValue.Size = new Size(40, 25);
+            labelWindGustValue.TabIndex = 36;
+            labelWindGustValue.Text = "null";
+            // 
+            // labelWindGust
+            // 
+            labelWindGust.AutoSize = true;
+            labelWindGust.Location = new Point(50, 516);
+            labelWindGust.Margin = new Padding(4, 0, 4, 0);
+            labelWindGust.Name = "labelWindGust";
+            labelWindGust.Size = new Size(121, 25);
+            labelWindGust.TabIndex = 35;
+            labelWindGust.Text = "Tiupan Angin:";
+            // 
+            // labelWindDegreeValue
+            // 
+            labelWindDegreeValue.AutoSize = true;
+            labelWindDegreeValue.Location = new Point(165, 491);
+            labelWindDegreeValue.Margin = new Padding(4, 0, 4, 0);
+            labelWindDegreeValue.Name = "labelWindDegreeValue";
+            labelWindDegreeValue.Size = new Size(40, 25);
+            labelWindDegreeValue.TabIndex = 34;
+            labelWindDegreeValue.Text = "null";
+            // 
+            // labelWindDegree
+            // 
+            labelWindDegree.AutoSize = true;
+            labelWindDegree.Location = new Point(50, 491);
+            labelWindDegree.Margin = new Padding(4, 0, 4, 0);
+            labelWindDegree.Name = "labelWindDegree";
+            labelWindDegree.Size = new Size(105, 25);
+            labelWindDegree.TabIndex = 33;
+            labelWindDegree.Text = "Arah Angin:";
+            // 
+            // labelWindSpeedValue
+            // 
+            labelWindSpeedValue.AutoSize = true;
+            labelWindSpeedValue.Location = new Point(214, 466);
+            labelWindSpeedValue.Margin = new Padding(4, 0, 4, 0);
+            labelWindSpeedValue.Name = "labelWindSpeedValue";
+            labelWindSpeedValue.Size = new Size(40, 25);
+            labelWindSpeedValue.TabIndex = 32;
+            labelWindSpeedValue.Text = "null";
+            // 
+            // labelWindSpeed
+            // 
+            labelWindSpeed.AutoSize = true;
+            labelWindSpeed.Location = new Point(50, 466);
+            labelWindSpeed.Margin = new Padding(4, 0, 4, 0);
+            labelWindSpeed.Name = "labelWindSpeed";
+            labelWindSpeed.Size = new Size(149, 25);
+            labelWindSpeed.TabIndex = 31;
+            labelWindSpeed.Text = "Kecepatan Angin:";
+            // 
+            // labelWind
+            // 
+            labelWind.AutoSize = true;
+            labelWind.Location = new Point(30, 441);
+            labelWind.Margin = new Padding(4, 0, 4, 0);
+            labelWind.Name = "labelWind";
+            labelWind.Size = new Size(63, 25);
+            labelWind.TabIndex = 30;
+            labelWind.Text = "Angin:";
+            // 
             // labelVisibilityValue
             // 
             labelVisibilityValue.AutoSize = true;
-            labelVisibilityValue.Location = new Point(156, 333);
+            labelVisibilityValue.Location = new Point(195, 416);
+            labelVisibilityValue.Margin = new Padding(4, 0, 4, 0);
             labelVisibilityValue.Name = "labelVisibilityValue";
-            labelVisibilityValue.Size = new Size(33, 20);
+            labelVisibilityValue.Size = new Size(40, 25);
             labelVisibilityValue.TabIndex = 29;
             labelVisibilityValue.Text = "null";
             // 
             // labelVisibility
             // 
             labelVisibility.AutoSize = true;
-            labelVisibility.Location = new Point(24, 333);
+            labelVisibility.Location = new Point(30, 416);
+            labelVisibility.Margin = new Padding(4, 0, 4, 0);
             labelVisibility.Name = "labelVisibility";
-            labelVisibility.Size = new Size(126, 20);
+            labelVisibility.Size = new Size(151, 25);
             labelVisibility.TabIndex = 28;
             labelVisibility.Text = "Jarak Penglihatan:";
             // 
             // labelGroundPressureValue
             // 
             labelGroundPressureValue.AutoSize = true;
-            labelGroundPressureValue.Location = new Point(153, 293);
+            labelGroundPressureValue.Location = new Point(191, 366);
+            labelGroundPressureValue.Margin = new Padding(4, 0, 4, 0);
             labelGroundPressureValue.Name = "labelGroundPressureValue";
-            labelGroundPressureValue.Size = new Size(33, 20);
+            labelGroundPressureValue.Size = new Size(40, 25);
             labelGroundPressureValue.TabIndex = 27;
             labelGroundPressureValue.Text = "null";
             // 
             // labelSeaPressureValue
             // 
             labelSeaPressureValue.AutoSize = true;
-            labelSeaPressureValue.Location = new Point(167, 273);
+            labelSeaPressureValue.Location = new Point(209, 341);
+            labelSeaPressureValue.Margin = new Padding(4, 0, 4, 0);
             labelSeaPressureValue.Name = "labelSeaPressureValue";
-            labelSeaPressureValue.Size = new Size(33, 20);
+            labelSeaPressureValue.Size = new Size(40, 25);
             labelSeaPressureValue.TabIndex = 26;
             labelSeaPressureValue.Text = "null";
             // 
             // labelGroundPressure
             // 
             labelGroundPressure.AutoSize = true;
-            labelGroundPressure.Location = new Point(40, 293);
+            labelGroundPressure.Location = new Point(50, 366);
+            labelGroundPressure.Margin = new Padding(4, 0, 4, 0);
             labelGroundPressure.Name = "labelGroundPressure";
-            labelGroundPressure.Size = new Size(107, 20);
+            labelGroundPressure.Size = new Size(127, 25);
             labelGroundPressure.TabIndex = 25;
             labelGroundPressure.Text = "Tekanan Darat:";
             // 
             // labelSeaPressure
             // 
             labelSeaPressure.AutoSize = true;
-            labelSeaPressure.Location = new Point(40, 273);
+            labelSeaPressure.Location = new Point(50, 341);
+            labelSeaPressure.Margin = new Padding(4, 0, 4, 0);
             labelSeaPressure.Name = "labelSeaPressure";
-            labelSeaPressure.Size = new Size(121, 20);
+            labelSeaPressure.Size = new Size(144, 25);
             labelSeaPressure.TabIndex = 24;
             labelSeaPressure.Text = "Tekanan Air Laut:";
             // 
             // labelMainPressure
             // 
             labelMainPressure.AutoSize = true;
-            labelMainPressure.Location = new Point(40, 253);
+            labelMainPressure.Location = new Point(50, 316);
+            labelMainPressure.Margin = new Padding(4, 0, 4, 0);
             labelMainPressure.Name = "labelMainPressure";
-            labelMainPressure.Size = new Size(114, 20);
+            labelMainPressure.Size = new Size(136, 25);
             labelMainPressure.TabIndex = 23;
             labelMainPressure.Text = "Tekanan Utama:";
             // 
             // labelHumidityValue
             // 
             labelHumidityValue.AutoSize = true;
-            labelHumidityValue.Location = new Point(126, 313);
+            labelHumidityValue.Location = new Point(158, 391);
+            labelHumidityValue.Margin = new Padding(4, 0, 4, 0);
             labelHumidityValue.Name = "labelHumidityValue";
-            labelHumidityValue.Size = new Size(33, 20);
+            labelHumidityValue.Size = new Size(40, 25);
             labelHumidityValue.TabIndex = 22;
             labelHumidityValue.Text = "null";
             // 
             // labelHumidity
             // 
             labelHumidity.AutoSize = true;
-            labelHumidity.Location = new Point(24, 313);
+            labelHumidity.Location = new Point(30, 391);
+            labelHumidity.Margin = new Padding(4, 0, 4, 0);
             labelHumidity.Name = "labelHumidity";
-            labelHumidity.Size = new Size(96, 20);
+            labelHumidity.Size = new Size(114, 25);
             labelHumidity.TabIndex = 21;
             labelHumidity.Text = "Kelembaban:";
             // 
@@ -783,169 +921,188 @@
             comboBoxUnit.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxUnit.FormattingEnabled = true;
             comboBoxUnit.Items.AddRange(new object[] { "Kelvin", "Celcius", "Fahrenheit" });
-            comboBoxUnit.Location = new Point(213, 23);
+            comboBoxUnit.Location = new Point(266, 29);
+            comboBoxUnit.Margin = new Padding(4);
             comboBoxUnit.Name = "comboBoxUnit";
-            comboBoxUnit.Size = new Size(151, 28);
+            comboBoxUnit.Size = new Size(188, 33);
             comboBoxUnit.TabIndex = 20;
             // 
             // labelMainPressureValue
             // 
             labelMainPressureValue.AutoSize = true;
-            labelMainPressureValue.Location = new Point(160, 253);
+            labelMainPressureValue.Location = new Point(200, 316);
+            labelMainPressureValue.Margin = new Padding(4, 0, 4, 0);
             labelMainPressureValue.Name = "labelMainPressureValue";
-            labelMainPressureValue.Size = new Size(33, 20);
+            labelMainPressureValue.Size = new Size(40, 25);
             labelMainPressureValue.TabIndex = 19;
             labelMainPressureValue.Text = "null";
             // 
             // labelPressure
             // 
             labelPressure.AutoSize = true;
-            labelPressure.Location = new Point(24, 233);
+            labelPressure.Location = new Point(30, 291);
+            labelPressure.Margin = new Padding(4, 0, 4, 0);
             labelPressure.Name = "labelPressure";
-            labelPressure.Size = new Size(66, 20);
+            labelPressure.Size = new Size(79, 25);
             labelPressure.TabIndex = 18;
             labelPressure.Text = "Tekanan:";
             // 
             // labelMaxTemperatureValue
             // 
             labelMaxTemperatureValue.AutoSize = true;
-            labelMaxTemperatureValue.Location = new Point(157, 213);
+            labelMaxTemperatureValue.Location = new Point(196, 266);
+            labelMaxTemperatureValue.Margin = new Padding(4, 0, 4, 0);
             labelMaxTemperatureValue.Name = "labelMaxTemperatureValue";
-            labelMaxTemperatureValue.Size = new Size(33, 20);
+            labelMaxTemperatureValue.Size = new Size(40, 25);
             labelMaxTemperatureValue.TabIndex = 17;
             labelMaxTemperatureValue.Text = "null";
             // 
             // labelMaxTemperature
             // 
             labelMaxTemperature.AutoSize = true;
-            labelMaxTemperature.Location = new Point(40, 213);
+            labelMaxTemperature.Location = new Point(50, 266);
+            labelMaxTemperature.Margin = new Padding(4, 0, 4, 0);
             labelMaxTemperature.Name = "labelMaxTemperature";
-            labelMaxTemperature.Size = new Size(111, 20);
+            labelMaxTemperature.Size = new Size(136, 25);
             labelMaxTemperature.TabIndex = 16;
             labelMaxTemperature.Text = "Suhu Maksimal:";
             // 
             // labelMinimalTemperatureValue
             // 
             labelMinimalTemperatureValue.AutoSize = true;
-            labelMinimalTemperatureValue.Location = new Point(148, 193);
+            labelMinimalTemperatureValue.Location = new Point(185, 241);
+            labelMinimalTemperatureValue.Margin = new Padding(4, 0, 4, 0);
             labelMinimalTemperatureValue.Name = "labelMinimalTemperatureValue";
-            labelMinimalTemperatureValue.Size = new Size(33, 20);
+            labelMinimalTemperatureValue.Size = new Size(40, 25);
             labelMinimalTemperatureValue.TabIndex = 15;
             labelMinimalTemperatureValue.Text = "null";
             // 
             // labelMinimalTemperature
             // 
             labelMinimalTemperature.AutoSize = true;
-            labelMinimalTemperature.Location = new Point(40, 193);
+            labelMinimalTemperature.Location = new Point(50, 241);
+            labelMinimalTemperature.Margin = new Padding(4, 0, 4, 0);
             labelMinimalTemperature.Name = "labelMinimalTemperature";
-            labelMinimalTemperature.Size = new Size(102, 20);
+            labelMinimalTemperature.Size = new Size(124, 25);
             labelMinimalTemperature.TabIndex = 14;
             labelMinimalTemperature.Text = "Suhu Minimal:";
             // 
             // labelMainTemperatureValue
             // 
             labelMainTemperatureValue.AutoSize = true;
-            labelMainTemperatureValue.Location = new Point(138, 173);
+            labelMainTemperatureValue.Location = new Point(172, 216);
+            labelMainTemperatureValue.Margin = new Padding(4, 0, 4, 0);
             labelMainTemperatureValue.Name = "labelMainTemperatureValue";
-            labelMainTemperatureValue.Size = new Size(33, 20);
+            labelMainTemperatureValue.Size = new Size(40, 25);
             labelMainTemperatureValue.TabIndex = 13;
             labelMainTemperatureValue.Text = "null";
             // 
             // labelMainTemperature
             // 
             labelMainTemperature.AutoSize = true;
-            labelMainTemperature.Location = new Point(40, 173);
+            labelMainTemperature.Location = new Point(50, 216);
+            labelMainTemperature.Margin = new Padding(4, 0, 4, 0);
             labelMainTemperature.Name = "labelMainTemperature";
-            labelMainTemperature.Size = new Size(92, 20);
+            labelMainTemperature.Size = new Size(113, 25);
             labelMainTemperature.TabIndex = 12;
             labelMainTemperature.Text = "Suhu Utama:";
             // 
             // labelTemperature
             // 
             labelTemperature.AutoSize = true;
-            labelTemperature.Location = new Point(24, 153);
+            labelTemperature.Location = new Point(30, 191);
+            labelTemperature.Margin = new Padding(4, 0, 4, 0);
             labelTemperature.Name = "labelTemperature";
-            labelTemperature.Size = new Size(44, 20);
+            labelTemperature.Size = new Size(56, 25);
             labelTemperature.TabIndex = 11;
             labelTemperature.Text = "Suhu:";
             // 
             // labelWeatherValue
             // 
             labelWeatherValue.AutoSize = true;
-            labelWeatherValue.Location = new Point(82, 133);
+            labelWeatherValue.Location = new Point(102, 166);
+            labelWeatherValue.Margin = new Padding(4, 0, 4, 0);
             labelWeatherValue.Name = "labelWeatherValue";
-            labelWeatherValue.Size = new Size(33, 20);
+            labelWeatherValue.Size = new Size(40, 25);
             labelWeatherValue.TabIndex = 10;
             labelWeatherValue.Text = "null";
             // 
             // labelWeather
             // 
             labelWeather.AutoSize = true;
-            labelWeather.Location = new Point(24, 133);
+            labelWeather.Location = new Point(30, 166);
+            labelWeather.Margin = new Padding(4, 0, 4, 0);
             labelWeather.Name = "labelWeather";
-            labelWeather.Size = new Size(52, 20);
+            labelWeather.Size = new Size(63, 25);
             labelWeather.TabIndex = 9;
             labelWeather.Text = "Cuaca:";
             // 
             // labelLongitudeValue
             // 
             labelLongitudeValue.AutoSize = true;
-            labelLongitudeValue.Location = new Point(125, 113);
+            labelLongitudeValue.Location = new Point(156, 141);
+            labelLongitudeValue.Margin = new Padding(4, 0, 4, 0);
             labelLongitudeValue.Name = "labelLongitudeValue";
-            labelLongitudeValue.Size = new Size(33, 20);
+            labelLongitudeValue.Size = new Size(40, 25);
             labelLongitudeValue.TabIndex = 8;
             labelLongitudeValue.Text = "null";
             // 
             // labelLongitude
             // 
             labelLongitude.AutoSize = true;
-            labelLongitude.Location = new Point(40, 113);
+            labelLongitude.Location = new Point(50, 141);
+            labelLongitude.Margin = new Padding(4, 0, 4, 0);
             labelLongitude.Name = "labelLongitude";
-            labelLongitude.Size = new Size(79, 20);
+            labelLongitude.Size = new Size(96, 25);
             labelLongitude.TabIndex = 7;
             labelLongitude.Text = "Longitude:";
             // 
             // labelLatitudeValue
             // 
             labelLatitudeValue.AutoSize = true;
-            labelLatitudeValue.Location = new Point(109, 93);
+            labelLatitudeValue.Location = new Point(136, 116);
+            labelLatitudeValue.Margin = new Padding(4, 0, 4, 0);
             labelLatitudeValue.Name = "labelLatitudeValue";
-            labelLatitudeValue.Size = new Size(33, 20);
+            labelLatitudeValue.Size = new Size(40, 25);
             labelLatitudeValue.TabIndex = 6;
             labelLatitudeValue.Text = "null";
             // 
             // labelLatitude
             // 
             labelLatitude.AutoSize = true;
-            labelLatitude.Location = new Point(40, 93);
+            labelLatitude.Location = new Point(50, 116);
+            labelLatitude.Margin = new Padding(4, 0, 4, 0);
             labelLatitude.Name = "labelLatitude";
-            labelLatitude.Size = new Size(66, 20);
+            labelLatitude.Size = new Size(79, 25);
             labelLatitude.TabIndex = 5;
             labelLatitude.Text = "Latitude:";
             // 
             // labelCoordinate
             // 
             labelCoordinate.AutoSize = true;
-            labelCoordinate.Location = new Point(24, 73);
+            labelCoordinate.Location = new Point(30, 91);
+            labelCoordinate.Margin = new Padding(4, 0, 4, 0);
             labelCoordinate.Name = "labelCoordinate";
-            labelCoordinate.Size = new Size(78, 20);
+            labelCoordinate.Size = new Size(94, 25);
             labelCoordinate.TabIndex = 4;
             labelCoordinate.Text = "Koordinat:";
             // 
             // labelResult
             // 
             labelResult.AutoSize = true;
-            labelResult.Location = new Point(8, 53);
+            labelResult.Location = new Point(10, 66);
+            labelResult.Margin = new Padding(4, 0, 4, 0);
             labelResult.Name = "labelResult";
-            labelResult.Size = new Size(45, 20);
+            labelResult.Size = new Size(54, 25);
             labelResult.TabIndex = 3;
             labelResult.Text = "Hasil:";
             // 
             // buttonSearchWeather
             // 
-            buttonSearchWeather.Location = new Point(370, 23);
+            buttonSearchWeather.Location = new Point(462, 29);
+            buttonSearchWeather.Margin = new Padding(4);
             buttonSearchWeather.Name = "buttonSearchWeather";
-            buttonSearchWeather.Size = new Size(94, 29);
+            buttonSearchWeather.Size = new Size(118, 36);
             buttonSearchWeather.TabIndex = 2;
             buttonSearchWeather.Text = "Cari";
             buttonSearchWeather.UseVisualStyleBackColor = true;
@@ -953,118 +1110,94 @@
             // 
             // textBoxSearchWeather
             // 
-            textBoxSearchWeather.Location = new Point(8, 23);
+            textBoxSearchWeather.Location = new Point(10, 29);
+            textBoxSearchWeather.Margin = new Padding(4);
             textBoxSearchWeather.Name = "textBoxSearchWeather";
-            textBoxSearchWeather.Size = new Size(199, 27);
+            textBoxSearchWeather.Size = new Size(248, 31);
             textBoxSearchWeather.TabIndex = 1;
             textBoxSearchWeather.Text = "jember";
             // 
             // labelCityName
             // 
             labelCityName.AutoSize = true;
-            labelCityName.Location = new Point(3, 0);
+            labelCityName.Location = new Point(4, 0);
+            labelCityName.Margin = new Padding(4, 0, 4, 0);
             labelCityName.Name = "labelCityName";
-            labelCityName.Size = new Size(84, 20);
+            labelCityName.Size = new Size(100, 25);
             labelCityName.TabIndex = 0;
             labelCityName.Text = "Nama Kota";
             // 
             // tabPengaturan
             // 
-            tabPengaturan.Location = new Point(4, 29);
+            tabPengaturan.Controls.Add(buttonTestPrint);
+            tabPengaturan.Controls.Add(comboBoxPaperSize);
+            tabPengaturan.Controls.Add(labelPaperSize);
+            tabPengaturan.Controls.Add(comboBoxPrinter);
+            tabPengaturan.Controls.Add(labelPrinter);
+            tabPengaturan.Location = new Point(4, 34);
+            tabPengaturan.Margin = new Padding(4);
             tabPengaturan.Name = "tabPengaturan";
-            tabPengaturan.Size = new Size(1130, 540);
+            tabPengaturan.Size = new Size(1414, 678);
             tabPengaturan.TabIndex = 4;
             tabPengaturan.Text = "Pengaturan";
             tabPengaturan.UseVisualStyleBackColor = true;
             // 
-            // labelWind
+            // comboBoxPaperSize
             // 
-            labelWind.AutoSize = true;
-            labelWind.Location = new Point(24, 353);
-            labelWind.Name = "labelWind";
-            labelWind.Size = new Size(51, 20);
-            labelWind.TabIndex = 30;
-            labelWind.Text = "Angin:";
+            comboBoxPaperSize.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxPaperSize.FormattingEnabled = true;
+            comboBoxPaperSize.Location = new Point(8, 92);
+            comboBoxPaperSize.Name = "comboBoxPaperSize";
+            comboBoxPaperSize.Size = new Size(341, 33);
+            comboBoxPaperSize.TabIndex = 3;
+            comboBoxPaperSize.SelectedIndexChanged += OnComboBoxPaperSizeSelectedIndexChanged;
             // 
-            // labelWindSpeed
+            // labelPaperSize
             // 
-            labelWindSpeed.AutoSize = true;
-            labelWindSpeed.Location = new Point(40, 373);
-            labelWindSpeed.Name = "labelWindSpeed";
-            labelWindSpeed.Size = new Size(125, 20);
-            labelWindSpeed.TabIndex = 31;
-            labelWindSpeed.Text = "Kecepatan Angin:";
+            labelPaperSize.AutoSize = true;
+            labelPaperSize.Location = new Point(8, 64);
+            labelPaperSize.Name = "labelPaperSize";
+            labelPaperSize.Size = new Size(121, 25);
+            labelPaperSize.TabIndex = 2;
+            labelPaperSize.Text = "Ukuran Kertas";
             // 
-            // labelWindSpeedValue
+            // comboBoxPrinter
             // 
-            labelWindSpeedValue.AutoSize = true;
-            labelWindSpeedValue.Location = new Point(171, 373);
-            labelWindSpeedValue.Name = "labelWindSpeedValue";
-            labelWindSpeedValue.Size = new Size(33, 20);
-            labelWindSpeedValue.TabIndex = 32;
-            labelWindSpeedValue.Text = "null";
+            comboBoxPrinter.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxPrinter.FormattingEnabled = true;
+            comboBoxPrinter.Location = new Point(8, 28);
+            comboBoxPrinter.Name = "comboBoxPrinter";
+            comboBoxPrinter.Size = new Size(341, 33);
+            comboBoxPrinter.TabIndex = 1;
+            comboBoxPrinter.SelectedIndexChanged += OnComboBoxPrinterSelectedIndexChanged;
             // 
-            // labelWindDegree
+            // labelPrinter
             // 
-            labelWindDegree.AutoSize = true;
-            labelWindDegree.Location = new Point(40, 393);
-            labelWindDegree.Name = "labelWindDegree";
-            labelWindDegree.Size = new Size(86, 20);
-            labelWindDegree.TabIndex = 33;
-            labelWindDegree.Text = "Arah Angin:";
+            labelPrinter.AutoSize = true;
+            labelPrinter.Location = new Point(8, 0);
+            labelPrinter.Name = "labelPrinter";
+            labelPrinter.Size = new Size(63, 25);
+            labelPrinter.TabIndex = 0;
+            labelPrinter.Text = "Printer";
             // 
-            // labelWindDegreeValue
+            // buttonTestPrint
             // 
-            labelWindDegreeValue.AutoSize = true;
-            labelWindDegreeValue.Location = new Point(132, 393);
-            labelWindDegreeValue.Name = "labelWindDegreeValue";
-            labelWindDegreeValue.Size = new Size(33, 20);
-            labelWindDegreeValue.TabIndex = 34;
-            labelWindDegreeValue.Text = "null";
-            // 
-            // labelWindGust
-            // 
-            labelWindGust.AutoSize = true;
-            labelWindGust.Location = new Point(40, 413);
-            labelWindGust.Name = "labelWindGust";
-            labelWindGust.Size = new Size(100, 20);
-            labelWindGust.TabIndex = 35;
-            labelWindGust.Text = "Tiupan Angin:";
-            // 
-            // labelWindGustValue
-            // 
-            labelWindGustValue.AutoSize = true;
-            labelWindGustValue.Location = new Point(146, 413);
-            labelWindGustValue.Name = "labelWindGustValue";
-            labelWindGustValue.Size = new Size(33, 20);
-            labelWindGustValue.TabIndex = 36;
-            labelWindGustValue.Text = "null";
-            // 
-            // labelCloudiness
-            // 
-            labelCloudiness.AutoSize = true;
-            labelCloudiness.Location = new Point(24, 433);
-            labelCloudiness.Name = "labelCloudiness";
-            labelCloudiness.Size = new Size(75, 20);
-            labelCloudiness.TabIndex = 37;
-            labelCloudiness.Text = "Mendung:";
-            // 
-            // labelCloudinessValue
-            // 
-            labelCloudinessValue.AutoSize = true;
-            labelCloudinessValue.Location = new Point(105, 433);
-            labelCloudinessValue.Name = "labelCloudinessValue";
-            labelCloudinessValue.Size = new Size(33, 20);
-            labelCloudinessValue.TabIndex = 38;
-            labelCloudinessValue.Text = "null";
+            buttonTestPrint.Location = new Point(8, 131);
+            buttonTestPrint.Name = "buttonTestPrint";
+            buttonTestPrint.Size = new Size(112, 34);
+            buttonTestPrint.TabIndex = 4;
+            buttonTestPrint.Text = "Test Print";
+            buttonTestPrint.UseVisualStyleBackColor = true;
+            buttonTestPrint.Click += OnButtonTestPrintClick;
             // 
             // Homepage
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(1138, 573);
+            ClientSize = new Size(1422, 716);
             Controls.Add(tabControlHome);
+            Margin = new Padding(4);
             Name = "Homepage";
             Text = "Logitop";
             ((System.ComponentModel.ISupportInitialize)dataGridLaptop).EndInit();
@@ -1081,6 +1214,8 @@
             ((System.ComponentModel.ISupportInitialize)dataGridReportTransaction).EndInit();
             tabWeatherApi.ResumeLayout(false);
             tabWeatherApi.PerformLayout();
+            tabPengaturan.ResumeLayout(false);
+            tabPengaturan.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -1111,24 +1246,8 @@
         private Label labelTotalTransaction;
         private TextBox textBoxTransactionTotal;
         private DataGridView dataGridLaptopTransaction;
-        private DataGridViewTextBoxColumn laptop_name;
-        private DataGridViewTextBoxColumn laptop_price;
-        private DataGridViewTextBoxColumn stock;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
-        private DataGridViewButtonColumn add_to_transaction;
-        private DataGridViewTextBoxColumn laptop_name_transaction;
-        private DataGridViewTextBoxColumn laptop_price_transaction;
-        private DataGridViewTextBoxColumn laptop_amount_transaction;
-        private DataGridViewButtonColumn remove_item_transaction;
         private DataGridView dataGridViewReportDetailTransaction;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn8;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn9;
         private DataGridView dataGridReportTransaction;
-        private DataGridViewTextBoxColumn id_report_transaction;
-        private DataGridViewTextBoxColumn date_report_transaction;
         private TextBox textBoxReportChange;
         private Label labelReportChange;
         private TextBox textBoxReportPay;
@@ -1174,5 +1293,26 @@
         private Label labelWindGustValue;
         private Label labelCloudiness;
         private Label labelCloudinessValue;
+        private ComboBox comboBoxPrinter;
+        private Label labelPrinter;
+        private Label labelPaperSize;
+        private ComboBox comboBoxPaperSize;
+        private DataGridViewTextBoxColumn columnLaptopLaptopName;
+        private DataGridViewTextBoxColumn columnLaptopLaptopPrice;
+        private DataGridViewTextBoxColumn columnLaptopLaptopStock;
+        private DataGridViewTextBoxColumn columnShoppingCartLaptopName;
+        private DataGridViewTextBoxColumn columnShoppingCartLaptopPrice;
+        private DataGridViewTextBoxColumn columnShoppingCartLaptopAmount;
+        private DataGridViewButtonColumn columnShoppingCartAction;
+        private DataGridViewTextBoxColumn columnTransactionLaptopName;
+        private DataGridViewTextBoxColumn columnTransactionLaptopPrice;
+        private DataGridViewTextBoxColumn columnTransactionLaptopStock;
+        private DataGridViewButtonColumn columnTransactionAction;
+        private DataGridViewTextBoxColumn columnReportItemTransactionLaptopName;
+        private DataGridViewTextBoxColumn columnReportItemTransactionLaptopPrice;
+        private DataGridViewTextBoxColumn columnReportItemTransactionLaptopAmount;
+        private DataGridViewTextBoxColumn columnReportIdTransaction;
+        private DataGridViewTextBoxColumn columnReportDateTransaction;
+        private Button buttonTestPrint;
     }
 }
