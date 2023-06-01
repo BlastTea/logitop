@@ -25,13 +25,14 @@ namespace Logitop.Services
 
         private static void PrintMessageHandler(object sender, PrintPageEventArgs e, PrintingArguments args)
         {
-            Font font = new Font("Monospace", 10);
+            Font font = new Font("Consolas", 10);
             Brush brush = Brushes.Black;
             float x = e.MarginBounds.Left;
             float y = e.MarginBounds.Top;
 
             float spacing = 0;
-            int maxLength = 23;
+            float spacingBetweenItem = 10;
+            int maxLength = 22;
             char separator = '=';
 
             if (args is PrintingArgumentsMessage)
@@ -59,13 +60,42 @@ namespace Logitop.Services
                 y += AddNewLine(e, font, "A", spacing);
                 foreach (DetailTransaction detailTransaction in transactionArgs.DetailTransactions)
                 {
+                    total += detailTransaction.Laptop.Price * detailTransaction.Amount;
+
                     foreach (string name in BreakStringByLength(detailTransaction.Laptop.Name, maxLength))
                     {
                         e.Graphics!.DrawString($"{name.PadRight(maxLength)}", font, brush, GetCenterX(e, font, "".PadRight(maxLength, separator)), y);
                         y += AddNewLine(e, font, "A", spacing);
                     }
-                    // Capek bang :)
+
+                    string temporaryPrice = $"{detailTransaction.Laptop.Price} * {detailTransaction.Amount}";
+                    string finalPrice = (detailTransaction.Laptop.Price * detailTransaction.Amount).ToString();
+
+                    int temporaryPriceLength = temporaryPrice.Length + 1;
+                    int priceLength = finalPrice.Length;
+
+                    if (temporaryPriceLength + priceLength <= maxLength)
+                    {
+                        temporaryPrice = temporaryPrice + "".PadRight(maxLength - temporaryPriceLength - priceLength) + finalPrice;
+                        e.Graphics!.DrawString(temporaryPrice, font, brush, GetCenterX(e, font, "".PadRight(maxLength, separator)), y);
+                        y += AddNewLine(e, font, "A", spacing + spacingBetweenItem);
+                    }
+                    else
+                    {
+                        e.Graphics!.DrawString(temporaryPrice, font, brush, GetCenterX(e, font, "".PadRight(maxLength, separator)), y);
+                        y += AddNewLine(e, font, "A", spacing);
+                        e.Graphics!.DrawString(finalPrice, font, brush, GetCenterX(e, font, "".PadRight(maxLength, separator)), y);
+                        y += AddNewLine(e, font, "A", spacing + spacingBetweenItem);
+                    }
                 }
+                e.Graphics!.DrawString("".PadRight(maxLength, separator), font, brush, GetCenterX(e, font, "".PadRight(maxLength, separator)), y);
+                y += AddNewLine(e, font, "A", spacing + spacingBetweenItem);
+                e.Graphics!.DrawString("Total" + "".PadRight(maxLength - 5 - total.ToString().Length) + total.ToString(), font, brush, GetCenterX(e, font, "".PadRight(maxLength, separator)), y);
+                y += AddNewLine(e, font, "A", spacing + spacingBetweenItem);
+                e.Graphics!.DrawString("Bayar" + "".PadRight(maxLength - 5 - transactionArgs.Transaction.pay.ToString().Length) + transactionArgs.Transaction.pay.ToString(), font, brush, GetCenterX(e, font, "".PadRight(maxLength, separator)), y);
+                y += AddNewLine(e, font, "A", spacing + spacingBetweenItem);
+                int change = transactionArgs.Transaction.pay - total;
+                e.Graphics!.DrawString("Kembali" + "".PadRight(maxLength - 7 - change.ToString().Length) + change.ToString(), font, brush, GetCenterX(e, font, "".PadRight(maxLength, separator)), y);
             }
         }
 
