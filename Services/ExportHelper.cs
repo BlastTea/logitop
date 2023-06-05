@@ -151,7 +151,7 @@ namespace Logitop.Services
                             table.AddCell(CreateCell("Kembali", cellFont, true));
 
                             // Populate table with data from Excel
-                            for (int row = 6; row <= worksheet.Dimension.End.Row; row++)
+                            for (int row = 5; row <= worksheet.Dimension.End.Row; row++)
                             {
                                 table.AddCell(CreateCell(worksheet.Cells[row, 1].Value?.ToString() ?? "", cellFont));
                                 table.AddCell(CreateCell(worksheet.Cells[row, 2].Value?.ToString() ?? "", cellFont));
