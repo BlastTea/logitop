@@ -29,12 +29,63 @@ namespace Logitop.Utils
         public const string DatabaseName = "postgres";
         public const string DatabaseSchema = "public";
 
-        public const string OpenWheatherMapApiKey = "YOUR-API-KEY";
+        public const string OpenWheatherMapApiKey = "f9f10740f79d2757163ca9be85aebf8f";
 
         public static readonly PaperSize PaperSize58mm = new PaperSize("Custom", 201, 0);
         public static readonly PaperSize PaperSize80mm = new PaperSize("Custom", 283, 0);
 
         public const string PaperSize58mmName = "58mm";
         public const string PaperSize80mmName = "80mm";
+
+        public static string TranslateDayOfWeek(DayOfWeek dayOfWeek)
+        {
+            switch (dayOfWeek)
+            {
+                case DayOfWeek.Monday:
+                    return "Senin";
+                case DayOfWeek.Tuesday:
+                    return "Selasa";
+                case DayOfWeek.Wednesday:
+                    return "Rabu";
+                case DayOfWeek.Thursday:
+                    return "Kamis";
+                case DayOfWeek.Friday:
+                    return "Jum'at";
+                case DayOfWeek.Saturday:
+                    return "Sabtu";
+                default:
+                    return "Minggu";
+            }
+        }
+
+        public static string TranslateMonth(int month)
+        {
+            switch (month) {
+                case 2:
+                    return "Februari";
+                case 3:
+                    return "Maret";
+                case 4:
+                    return "April";
+                case 5:
+                    return "Mei";
+                case 6:
+                    return "Juni";
+                case 7:
+                    return "Juli";
+                case 8:
+                    return "Agustus";
+                case 9:
+                    return "September";
+                case 10:
+                    return "Oktober";
+                case 11:
+                    return "November";
+                case 12:
+                    return "Desember";
+                default:
+                    return "Januari";
+            }
+        }
     }
 }

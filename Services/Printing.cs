@@ -1,8 +1,6 @@
 ﻿using Logitop.Models;
 using Logitop.Utils;
 using System.Drawing.Printing;
-using System.Text;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Logitop.Services
 {
@@ -18,12 +16,12 @@ namespace Logitop.Services
 
             printDocument.PrinterSettings = printerSettings;
 
-            printDocument.PrintPage += new PrintPageEventHandler((sender, e) => PrintMessageHandler(sender, e, args));
+            printDocument.PrintPage += new PrintPageEventHandler((sender, e) => PrintEventHandler(sender, e, args));
 
             printDocument.Print();
         }
 
-        private static void PrintMessageHandler(object sender, PrintPageEventArgs e, PrintingArguments args)
+        private static void PrintEventHandler(object sender, PrintPageEventArgs e, PrintingArguments args)
         {
             Font font = new Font("Consolas", 10);
             Brush brush = Brushes.Black;
@@ -47,17 +45,17 @@ namespace Logitop.Services
                 int total = 0;
 
                 e.Graphics!.DrawString("Tokoku", font, brush, GetCenterX(e, font, "Tokoku"), y);
-                y += AddNewLine(e, font, "A", spacing);
+                y += AddNewLine(e, font, spacing);
                 e.Graphics!.DrawString("Jalan Antah Berantah", font, brush, GetCenterX(e, font, "Jalan Antah Berantah"), y);
-                y += AddNewLine(e, font, "A", spacing);
+                y += AddNewLine(e, font, spacing);
                 e.Graphics!.DrawString("".PadRight(maxLength, separator), font, brush, GetCenterX(e, font, "".PadRight(maxLength, separator)), y);
-                y += AddNewLine(e, font, "A", spacing);
+                y += AddNewLine(e, font, spacing);
                 e.Graphics!.DrawString("1/kasir".PadRight(maxLength), font, brush, GetCenterX(e, font, "".PadRight(maxLength, separator)), y);
-                y += AddNewLine(e, font, "A", spacing);
+                y += AddNewLine(e, font, spacing);
                 e.Graphics!.DrawString($"{transactionArgs.Transaction.GetFormattedDate()}".PadRight(maxLength), font, brush, GetCenterX(e, font, "".PadRight(maxLength, separator)), y);
-                y += AddNewLine(e, font, "A", spacing);
+                y += AddNewLine(e, font, spacing);
                 e.Graphics!.DrawString("".PadRight(maxLength, separator), font, brush, GetCenterX(e, font, "".PadRight(maxLength, separator)), y);
-                y += AddNewLine(e, font, "A", spacing);
+                y += AddNewLine(e, font, spacing);
                 foreach (DetailTransaction detailTransaction in transactionArgs.DetailTransactions)
                 {
                     total += detailTransaction.Laptop.Price * detailTransaction.Amount;
@@ -65,7 +63,7 @@ namespace Logitop.Services
                     foreach (string name in BreakStringByLength(detailTransaction.Laptop.Name, maxLength))
                     {
                         e.Graphics!.DrawString($"{name.PadRight(maxLength)}", font, brush, GetCenterX(e, font, "".PadRight(maxLength, separator)), y);
-                        y += AddNewLine(e, font, "A", spacing);
+                        y += AddNewLine(e, font, spacing);
                     }
 
                     string temporaryPrice = $"{detailTransaction.Laptop.Price} * {detailTransaction.Amount}";
@@ -78,22 +76,22 @@ namespace Logitop.Services
                     {
                         temporaryPrice = temporaryPrice + "".PadRight(maxLength - temporaryPriceLength - priceLength) + finalPrice;
                         e.Graphics!.DrawString(temporaryPrice, font, brush, GetCenterX(e, font, "".PadRight(maxLength, separator)), y);
-                        y += AddNewLine(e, font, "A", spacing + spacingBetweenItem);
+                        y += AddNewLine(e, font, spacing + spacingBetweenItem);
                     }
                     else
                     {
                         e.Graphics!.DrawString(temporaryPrice, font, brush, GetCenterX(e, font, "".PadRight(maxLength, separator)), y);
-                        y += AddNewLine(e, font, "A", spacing);
+                        y += AddNewLine(e, font, spacing);
                         e.Graphics!.DrawString(finalPrice, font, brush, GetCenterX(e, font, "".PadRight(maxLength, separator)), y);
-                        y += AddNewLine(e, font, "A", spacing + spacingBetweenItem);
+                        y += AddNewLine(e, font, spacing + spacingBetweenItem);
                     }
                 }
                 e.Graphics!.DrawString("".PadRight(maxLength, separator), font, brush, GetCenterX(e, font, "".PadRight(maxLength, separator)), y);
-                y += AddNewLine(e, font, "A", spacing + spacingBetweenItem);
+                y += AddNewLine(e, font, spacing);
                 e.Graphics!.DrawString("Total" + "".PadRight(maxLength - 5 - total.ToString().Length) + total.ToString(), font, brush, GetCenterX(e, font, "".PadRight(maxLength, separator)), y);
-                y += AddNewLine(e, font, "A", spacing + spacingBetweenItem);
+                y += AddNewLine(e, font, spacing);
                 e.Graphics!.DrawString("Bayar" + "".PadRight(maxLength - 5 - transactionArgs.Transaction.pay.ToString().Length) + transactionArgs.Transaction.pay.ToString(), font, brush, GetCenterX(e, font, "".PadRight(maxLength, separator)), y);
-                y += AddNewLine(e, font, "A", spacing + spacingBetweenItem);
+                y += AddNewLine(e, font, spacing);
                 int change = transactionArgs.Transaction.pay - total;
                 e.Graphics!.DrawString("Kembali" + "".PadRight(maxLength - 7 - change.ToString().Length) + change.ToString(), font, brush, GetCenterX(e, font, "".PadRight(maxLength, separator)), y);
             }
@@ -103,7 +101,7 @@ namespace Logitop.Services
 
         private static float GetCenterY(PrintPageEventArgs e, Font font, string text) => e.MarginBounds.Top + (e.MarginBounds.Height - e.Graphics!.MeasureString(text, font).Height) / 2;
 
-        private static float AddNewLine(PrintPageEventArgs e, Font font, string text, float spacing) => e.Graphics!.MeasureString(text, font).Height + spacing;
+        private static float AddNewLine(PrintPageEventArgs e, Font font, float spacing) => e.Graphics!.MeasureString("A", font).Height + spacing;
 
         private static List<string> BreakStringByLength(string input, int length)
         {

@@ -137,8 +137,7 @@ namespace Logitop
             dataGridReportTransaction.Rows.Clear();
             foreach (Transaction transaction in Transactions)
             {
-                dataGridReportTransaction.Rows.Add(new object[] { transaction.Id, transaction.Date });
-
+                dataGridReportTransaction.Rows.Add(new object[] { transaction.Id, transaction.GetFormattedDate(withDayOfWeek: true, withMonthName: true) });
             }
         }
 
@@ -420,6 +419,28 @@ namespace Logitop
         private void OnButtonTestPrintClick(object sender, EventArgs e)
         {
             Printing.Print(new PrintingArgumentsMessage("Hello World"));
+        }
+
+        private void OnButtonExportReportClick(object sender, EventArgs e)
+        {
+            DialogResult result = saveReportDialogAs.ShowDialog();
+
+            if (result == DialogResult.Cancel)
+            {
+                return;
+            }
+
+            string filePath = saveReportDialogAs.FileName;
+            string fileExtension = Path.GetExtension(filePath);
+
+            if (fileExtension == ".xlsx")
+            {
+                ExportHelper.ExportReportToExcel(filePath, Transactions, DetailTransactions);
+            }
+            else if (fileExtension == ".pdf")
+            {
+                ExportHelper.ExportReportToPdf(filePath, Transactions, DetailTransactions);
+            }
         }
     }
 }

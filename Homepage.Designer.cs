@@ -62,6 +62,7 @@
             columnShoppingCartLaptopAmount = new DataGridViewTextBoxColumn();
             columnShoppingCartAction = new DataGridViewButtonColumn();
             tabLaporan = new TabPage();
+            buttonExportReport = new Button();
             textBoxReportChange = new TextBox();
             labelReportChange = new Label();
             textBoxReportPay = new TextBox();
@@ -116,11 +117,12 @@
             textBoxSearchWeather = new TextBox();
             labelCityName = new Label();
             tabPengaturan = new TabPage();
+            buttonTestPrint = new Button();
             comboBoxPaperSize = new ComboBox();
             labelPaperSize = new Label();
             comboBoxPrinter = new ComboBox();
             labelPrinter = new Label();
-            buttonTestPrint = new Button();
+            saveReportDialogAs = new SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)dataGridLaptop).BeginInit();
             tabControlHome.SuspendLayout();
             tabLaptop.SuspendLayout();
@@ -526,6 +528,7 @@
             // 
             // tabLaporan
             // 
+            tabLaporan.Controls.Add(buttonExportReport);
             tabLaporan.Controls.Add(textBoxReportChange);
             tabLaporan.Controls.Add(labelReportChange);
             tabLaporan.Controls.Add(textBoxReportPay);
@@ -542,10 +545,21 @@
             tabLaporan.Text = "Laporan";
             tabLaporan.UseVisualStyleBackColor = true;
             // 
+            // buttonExportReport
+            // 
+            buttonExportReport.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            buttonExportReport.Location = new Point(1294, 18);
+            buttonExportReport.Name = "buttonExportReport";
+            buttonExportReport.Size = new Size(112, 34);
+            buttonExportReport.TabIndex = 18;
+            buttonExportReport.Text = "Export";
+            buttonExportReport.UseVisualStyleBackColor = true;
+            buttonExportReport.Click += OnButtonExportReportClick;
+            // 
             // textBoxReportChange
             // 
             textBoxReportChange.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            textBoxReportChange.Location = new Point(860, 588);
+            textBoxReportChange.Location = new Point(860, 638);
             textBoxReportChange.Margin = new Padding(4);
             textBoxReportChange.Name = "textBoxReportChange";
             textBoxReportChange.ReadOnly = true;
@@ -556,7 +570,7 @@
             // 
             labelReportChange.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             labelReportChange.AutoSize = true;
-            labelReportChange.Location = new Point(860, 559);
+            labelReportChange.Location = new Point(860, 609);
             labelReportChange.Margin = new Padding(4, 0, 4, 0);
             labelReportChange.Name = "labelReportChange";
             labelReportChange.Size = new Size(75, 25);
@@ -566,7 +580,7 @@
             // textBoxReportPay
             // 
             textBoxReportPay.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            textBoxReportPay.Location = new Point(860, 521);
+            textBoxReportPay.Location = new Point(860, 574);
             textBoxReportPay.Margin = new Padding(4);
             textBoxReportPay.Name = "textBoxReportPay";
             textBoxReportPay.ReadOnly = true;
@@ -577,7 +591,7 @@
             // 
             labelReportPay.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             labelReportPay.AutoSize = true;
-            labelReportPay.Location = new Point(860, 492);
+            labelReportPay.Location = new Point(860, 545);
             labelReportPay.Margin = new Padding(4, 0, 4, 0);
             labelReportPay.Name = "labelReportPay";
             labelReportPay.Size = new Size(55, 25);
@@ -587,7 +601,7 @@
             // textBoxReportTotal
             // 
             textBoxReportTotal.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            textBoxReportTotal.Location = new Point(860, 455);
+            textBoxReportTotal.Location = new Point(860, 510);
             textBoxReportTotal.Margin = new Padding(4);
             textBoxReportTotal.Name = "textBoxReportTotal";
             textBoxReportTotal.ReadOnly = true;
@@ -598,7 +612,7 @@
             // 
             labelReportTotal.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             labelReportTotal.AutoSize = true;
-            labelReportTotal.Location = new Point(860, 426);
+            labelReportTotal.Location = new Point(860, 481);
             labelReportTotal.Margin = new Padding(4, 0, 4, 0);
             labelReportTotal.Name = "labelReportTotal";
             labelReportTotal.Size = new Size(49, 25);
@@ -613,7 +627,7 @@
             dataGridViewReportDetailTransaction.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridViewReportDetailTransaction.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewReportDetailTransaction.Columns.AddRange(new DataGridViewColumn[] { columnReportItemTransactionLaptopName, columnReportItemTransactionLaptopPrice, columnReportItemTransactionLaptopAmount });
-            dataGridViewReportDetailTransaction.Location = new Point(860, 5);
+            dataGridViewReportDetailTransaction.Location = new Point(862, 59);
             dataGridViewReportDetailTransaction.Margin = new Padding(4);
             dataGridViewReportDetailTransaction.MultiSelect = false;
             dataGridViewReportDetailTransaction.Name = "dataGridViewReportDetailTransaction";
@@ -657,7 +671,7 @@
             dataGridReportTransaction.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridReportTransaction.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridReportTransaction.Columns.AddRange(new DataGridViewColumn[] { columnReportIdTransaction, columnReportDateTransaction });
-            dataGridReportTransaction.Location = new Point(4, 4);
+            dataGridReportTransaction.Location = new Point(4, 59);
             dataGridReportTransaction.Margin = new Padding(4);
             dataGridReportTransaction.MultiSelect = false;
             dataGridReportTransaction.Name = "dataGridReportTransaction";
@@ -666,7 +680,7 @@
             dataGridReportTransaction.RowHeadersWidth = 51;
             dataGridReportTransaction.RowTemplate.Height = 29;
             dataGridReportTransaction.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridReportTransaction.Size = new Size(849, 668);
+            dataGridReportTransaction.Size = new Size(849, 613);
             dataGridReportTransaction.TabIndex = 10;
             dataGridReportTransaction.SelectionChanged += OnDataGridReportTransactionSelectionChanged;
             // 
@@ -1142,6 +1156,16 @@
             tabPengaturan.Text = "Pengaturan";
             tabPengaturan.UseVisualStyleBackColor = true;
             // 
+            // buttonTestPrint
+            // 
+            buttonTestPrint.Location = new Point(8, 131);
+            buttonTestPrint.Name = "buttonTestPrint";
+            buttonTestPrint.Size = new Size(112, 34);
+            buttonTestPrint.TabIndex = 4;
+            buttonTestPrint.Text = "Test Print";
+            buttonTestPrint.UseVisualStyleBackColor = true;
+            buttonTestPrint.Click += OnButtonTestPrintClick;
+            // 
             // comboBoxPaperSize
             // 
             comboBoxPaperSize.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -1180,15 +1204,10 @@
             labelPrinter.TabIndex = 0;
             labelPrinter.Text = "Printer";
             // 
-            // buttonTestPrint
+            // saveReportDialogAs
             // 
-            buttonTestPrint.Location = new Point(8, 131);
-            buttonTestPrint.Name = "buttonTestPrint";
-            buttonTestPrint.Size = new Size(112, 34);
-            buttonTestPrint.TabIndex = 4;
-            buttonTestPrint.Text = "Test Print";
-            buttonTestPrint.UseVisualStyleBackColor = true;
-            buttonTestPrint.Click += OnButtonTestPrintClick;
+            saveReportDialogAs.DefaultExt = "xlsx";
+            saveReportDialogAs.Filter = "All files|*.*|Excel files (.xlsx)|*.xlsx|Pdf files (.pdf)|*.pdf";
             // 
             // Homepage
             // 
@@ -1314,5 +1333,7 @@
         private DataGridViewTextBoxColumn columnReportIdTransaction;
         private DataGridViewTextBoxColumn columnReportDateTransaction;
         private Button buttonTestPrint;
+        private SaveFileDialog saveReportDialogAs;
+        private Button buttonExportReport;
     }
 }
