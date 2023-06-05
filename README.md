@@ -44,5 +44,3 @@ namespace Logitop.Utils
 ```
 # 3. Jalankan Aplikasi
 Silahkan jalankan aplikasinya
-
-

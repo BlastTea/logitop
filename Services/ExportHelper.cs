@@ -1,4 +1,7 @@
-﻿using iText.Kernel.Pdf;
+﻿using iText.IO.Font.Constants;
+using iText.Kernel.Font;
+using iText.Kernel.Geom;
+using iText.Kernel.Pdf;
 using iText.Layout;
 using iText.Layout.Element;
 using iText.Layout.Properties;
@@ -109,40 +112,76 @@ namespace Logitop.Services
 
         public static void ExportReportToPdf(string filePath, List<Transaction> transactions, List<DetailTransaction> detailTransactions)
         {
-            ExcelPackage excelPackage = ExportReportToExcel(transactions, detailTransactions);
-
-            using (PdfWriter writer = new PdfWriter(filePath))
+            using (ExcelPackage excelPackage = ExportReportToExcel(transactions, detailTransactions))
             {
-                using (PdfDocument pdfDocument = new PdfDocument(writer))
+                ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets[0];
+                using (PdfWriter writer = new PdfWriter(filePath))
                 {
-                    Document document = new Document(pdfDocument);
+                    using (PdfDocument pdfDocument = new PdfDocument(writer)) {
+                        pdfDocument.SetDefaultPageSize(PageSize.A4);
 
-                    ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets[0];
-
-                    int rowCount = worksheet.Dimension.Rows;
-                    int colCount = worksheet.Dimension.Columns;
-
-                    Table table = new Table(colCount);
-
-                    for (int row = 1; row <= rowCount; row++)
-                    {
-                        for (int col = 1; col <= colCount; col++)
+                        using (Document document = new Document(pdfDocument))
                         {
-                            string cellValue = worksheet.Cells[row, col].Value?.ToString();
-                            if (cellValue == null)
+                            document.SetMargins(20, 20, 20, 20);
+
+                            PdfFont titleFont = PdfFontFactory.CreateFont(StandardFonts.HELVETICA_BOLD);
+                            PdfFont cellFont = PdfFontFactory.CreateFont(StandardFonts.HELVETICA);
+
+                            // Add title to the PDF
+                            Paragraph title = new Paragraph("Laporan Logitop")
+                                .SetFont(titleFont)
+                                .SetFontSize(18)
+                                .SetTextAlignment(TextAlignment.CENTER)
+                                .SetMarginBottom(20);
+                            document.Add(title);
+
+                            // Create a table for the data
+                            Table table = new Table(UnitValue.CreatePercentArray(9)).UseAllAvailableWidth();
+                            table.SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.CENTER);
+
+                            // Add table headers
+                            table.AddCell(CreateCell("Id Transaksi", cellFont, true));
+                            table.AddCell(CreateCell("Tanggal Transaksi", cellFont, true));
+                            table.AddCell(CreateCell("Laptop - Nama", cellFont, true));
+                            table.AddCell(CreateCell("Laptop - Harga", cellFont, true));
+                            table.AddCell(CreateCell("Laptop - Jumlah", cellFont, true));
+                            table.AddCell(CreateCell("Laptop - Total", cellFont, true));
+                            table.AddCell(CreateCell("Total", cellFont, true));
+                            table.AddCell(CreateCell("Bayar", cellFont, true));
+                            table.AddCell(CreateCell("Kembali", cellFont, true));
+
+                            // Populate table with data from Excel
+                            for (int row = 6; row <= worksheet.Dimension.End.Row; row++)
                             {
-                                continue;
+                                table.AddCell(CreateCell(worksheet.Cells[row, 1].Value?.ToString() ?? "", cellFont));
+                                table.AddCell(CreateCell(worksheet.Cells[row, 2].Value?.ToString() ?? "", cellFont));
+                                table.AddCell(CreateCell(worksheet.Cells[row, 3].Value?.ToString() ?? "", cellFont));
+                                table.AddCell(CreateCell(worksheet.Cells[row, 4].Value?.ToString() ?? "", cellFont));
+                                table.AddCell(CreateCell(worksheet.Cells[row, 5].Value?.ToString() ?? "", cellFont));
+                                table.AddCell(CreateCell(worksheet.Cells[row, 6].Value?.ToString() ?? "", cellFont));
+                                table.AddCell(CreateCell(worksheet.Cells[row, 7].Value?.ToString() ?? "", cellFont));
+                                table.AddCell(CreateCell(worksheet.Cells[row, 8].Value?.ToString() ?? "", cellFont));
+                                table.AddCell(CreateCell(worksheet.Cells[row, 9].Value?.ToString() ?? "", cellFont));
                             }
-                            Cell cell = new Cell().Add(new Paragraph(cellValue));
-                            table.AddCell(cell);
+
+                            document.Add(table);
                         }
                     }
-
-                    document.Add(table);
-                    document.Close();
-
                 }
             }
         }
+
+        private static Cell CreateCell(string cellValue, PdfFont font, bool isHeader = false)
+        {
+            Cell cell = new Cell().Add(new Paragraph(cellValue).SetFont(font));
+
+            if (isHeader)
+            {
+                cell.SetBold();
+            }
+
+            return cell;
+        }
+
     }
 }
