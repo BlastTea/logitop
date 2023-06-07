@@ -1,3 +1,4 @@
+using iText.Kernel.Utils;
 using LiveChartsCore;
 using LiveChartsCore.Defaults;
 using LiveChartsCore.SkiaSharpView;
@@ -43,44 +44,6 @@ namespace Logitop
                 comboBoxPaperSize.Items.Add(paperSize);
             }
             comboBoxPaperSize.Text = Printing.GetCurrentPaperSize();
-
-            cartesianChart1.Series = new ISeries[]
-            {
-                new ColumnSeries<DateTimePoint>
-                {
-                    Name = "Mary",
-                    Values = new ObservableCollection<DateTimePoint>
-                    {
-                        new DateTimePoint(new DateTime(2021, 1, 1), 3),
-                        // notice we are missing the day new DateTime(2021, 1, 2)
-                        new DateTimePoint(new DateTime(2021, 1, 2), 6),
-                        new DateTimePoint(new DateTime(2021, 1, 2), 5),
-                    },
-                }
-            };
-
-            cartesianChart1.XAxes = new Axis[]
-            {
-                new Axis
-                {
-                    Labeler = value => new DateTime((long) value).ToString("MMMM dd"),
-                    LabelsRotation = 80,
-
-                    // when using a date time type, let the library know your unit 
-                    UnitWidth = TimeSpan.FromDays(1).Ticks, 
-
-                    // if the difference between our points is in hours then we would:
-                    // UnitWidth = TimeSpan.FromHours(1).Ticks,
-
-                    // since all the months and years have a different number of days
-                    // we can use the average, it would not cause any visible error in the user interface
-                    // Months: TimeSpan.FromDays(30.4375).Ticks
-                    // Years: TimeSpan.FromDays(365.25).Ticks
-
-                    // The MinStep property forces the separator to be greater than 1 day.
-                    MinStep = TimeSpan.FromDays(1).Ticks
-                }
-            };
         }
 
         private void ReadLaptopData()
@@ -107,7 +70,7 @@ namespace Logitop
                 Transactions.Add(transaction);
             }
 
-            DataTable detailTransactions = DbHelper.GetInstance().ExecuteQuery($"SELECT * FROM public.{Global.TableDetailTransaction} JOIN {Global.TableTransaction} ON {Global.TableDetailTransaction}.{Global.ColumnDetailTransactionTransactionId} = {Global.TableTransaction}.{Global.ColumnTransactionId} JOIN {Global.TableLaptop} ON {Global.TableDetailTransaction}.{Global.ColumnDetailTransactionLaptopId} = {Global.TableLaptop}.{Global.ColumnLaptopId} ORDER BY {Global.ColumnDetailTransactionId}");
+            DataTable detailTransactions = DbHelper.GetInstance().ExecuteQuery($"SELECT * FROM public.{Global.TableTransaction} JOIN {Global.TableDetailTransaction} ON {Global.TableDetailTransaction}.{Global.ColumnDetailTransactionTransactionId} = {Global.TableTransaction}.{Global.ColumnTransactionId} JOIN {Global.TableLaptop} ON {Global.TableDetailTransaction}.{Global.ColumnDetailTransactionLaptopId} = {Global.TableLaptop}.{Global.ColumnLaptopId} ORDER BY {Global.ColumnDetailTransactionId}");
             foreach (DataRow dr in detailTransactions.Rows)
             {
                 DetailTransaction detailTransaction = DetailTransaction.FromDataRow(dr);
@@ -179,8 +142,9 @@ namespace Logitop
             dataGridReportTransaction.Rows.Clear();
             foreach (Transaction transaction in Transactions)
             {
-                dataGridReportTransaction.Rows.Add(new object[] { transaction.Id, transaction.GetFormattedDate(withDayOfWeek: true, withMonthName: true) });
+                dataGridReportTransaction.Rows.Add(new object[] { transaction.Id, Global.GetFormattedDate(transaction.Date, withDayOfWeek: true, withMonthName: true) });
             }
+            SetGraphState();
         }
 
         private void ClearCurrentLaptopEditing()
@@ -228,8 +192,16 @@ namespace Logitop
             labelMaxTemperatureValue.Text = $"{weatherData["main"]["temp_max"]}°{comboBoxUnit.Text}";
 
             labelMainPressureValue.Text = $"{weatherData["main"]["pressure"]} hPa";
-            labelSeaPressureValue.Text = $"{weatherData["main"]["sea_level"]} hPa";
-            labelGroundPressureValue.Text = $"{weatherData["main"]["grnd_level"]} hPa";
+            try
+            {
+                labelSeaPressureValue.Text = $"{weatherData["main"]["sea_level"]} hPa";
+                labelGroundPressureValue.Text = $"{weatherData["main"]["grnd_level"]} hPa";
+            }
+            catch
+            {
+                labelSeaPressureValue.Text = "null";
+                labelGroundPressureValue.Text = "null";
+            }
 
             labelHumidityValue.Text = $"{weatherData["main"]["humidity"]} %";
 
@@ -237,9 +209,143 @@ namespace Logitop
 
             labelWindSpeedValue.Text = $"{weatherData["wind"]["speed"]} {TranslateWeatherSpeed()}";
             labelWindDegreeValue.Text = $"{weatherData["wind"]["deg"]}°";
-            labelWindGustValue.Text = $"{weatherData["wind"]["gust"]} {TranslateWeatherSpeed()}";
+            try
+            {
+                labelWindGustValue.Text = $"{weatherData["wind"]["gust"]} {TranslateWeatherSpeed()}";
+            }
+            catch
+            {
+                labelWindGustValue.Text = "null";
+            }
 
             labelCloudinessValue.Text = $"{weatherData["clouds"]["all"]} %";
+        }
+
+        private void SetGraphState()
+        {
+            if (Transactions.Count == 0)
+            {
+                return;
+            }
+
+            ObservableCollection<DateTimePoint> dateTimePoints = new ObservableCollection<DateTimePoint>();
+            DateTimeRange dateRange = new DateTimeRange(Transactions.First().Date, Transactions.Last().Date);
+
+            foreach (Transaction transaction in Transactions)
+            {
+                int total = 0;
+                foreach (DetailTransaction detailTransaction in DetailTransactions.Where((e) => e.Transaction.Id == transaction.Id))
+                {
+                    total += detailTransaction.Laptop.Price * detailTransaction.Amount;
+                }
+
+                if (dateRange.GetDuration().Hours <= 23)
+                {
+                    if (dateTimePoints.Count == 0)
+                    {
+                        DateTime now = DateTime.Now;
+                        for (int i = 0; i <= 23; i++)
+                        {
+                            dateTimePoints.Add(new DateTimePoint(new DateTime(now.Year, now.Month, now.Day, i, 0, 0), 0));
+                        }
+                    }
+                    dateTimePoints.Where((e) => e.DateTime.Hour == transaction.Date.Hour).Single().Value += total;
+                }
+                else if (dateRange.GetDuration().Days <= 30)
+                {
+                    if (dateTimePoints.Count == 0)
+                    {
+                        DateTime now = DateTime.Now;
+                        for (int i = dateRange.StartDate.Day; i <= 30; i++)
+                        {
+                            dateTimePoints.Add(new DateTimePoint(new DateTime(now.Year, now.Month, i), 0));
+                        }
+                    }
+                    dateTimePoints.Where((e) => e.DateTime.Day == transaction.Date.Day).Single().Value += total;
+                }
+                else
+                {
+                    if (dateTimePoints.Count == 0)
+                    {
+                        DateTime now = DateTime.Now;
+                        for (int i = dateRange.StartDate.Month; i <= (dateRange.GetDuration().Days % 365) / 30; i++)
+                        {
+                            dateTimePoints.Add(new DateTimePoint(new DateTime(now.Year, i, now.Day), 0));
+                        }
+                    }
+                    dateTimePoints.Where((e) => e.DateTime.Month == transaction.Date.Month && e.DateTime.Year == transaction.Date.Year).Single().Value += total;
+                }
+            }
+
+            cartesianChart1.Series = new ISeries[]
+            {
+                new ColumnSeries<DateTimePoint>
+                {
+                    TooltipLabelFormatter = (chartPoint) => $"{Global.GetFormattedDate(new DateTime((long) chartPoint.SecondaryValue), withDayOfWeek: true, withMonthName: true)}: {chartPoint.PrimaryValue}",
+                    Name = "Transaksi",
+                    Values = dateTimePoints,
+                }
+            };
+
+            cartesianChart1.XAxes = new Axis[]
+            {
+                new Axis
+                {
+                    //MinLimit = dateTimePoints.Min(dp => dp.DateTime).ToOADate(),
+                    //MaxLimit = dateTimePoints.Max(dp => dp.DateTime).ToOADate(),
+                    Labeler = value => {
+                        DateTime date = new DateTime((long) value);
+
+                        if (dateRange.GetDuration().Hours <= 23)
+                        {
+                            return $"{Global.PadLeft(date.Hour)}:00";
+                            //return $"{Global.PadLeft(date.Hour)}";
+                            //return "1";
+                        }
+                        else if (dateRange.GetDuration().Days <= 30)
+                        {
+                            return date.Day.ToString();
+                        }
+                        return $"{Global.TranslateMonth(date.Month)} {date.Year}";
+                    },
+                    LabelsRotation = 80,
+
+                    // when using a date time type, let the library know your unit 
+                    //UnitWidth = TimeSpan.FromDays(1).Ticks, 
+
+                    // if the difference between our points is in hours then we would:
+                     //UnitWidth = TimeSpan.FromHours(1).Ticks,
+
+                    UnitWidth = GetUnitWidthFromDuration(dateRange.GetDuration()),
+
+                    // since all the months and years have a different number of days
+                    // we can use the average, it would not cause any visible error in the user interface
+                    // Months: TimeSpan.FromDays(30.4375).Ticks
+                    // Years: TimeSpan.FromDays(365.25).Ticks
+
+                    // The MinStep property forces the separator to be greater than 1 day.
+                    //MinStep = TimeSpan.FromDays(1).Ticks,
+                    //MinStep = TimeSpan.FromHours(1).Ticks
+                    //MinStep = TimeSpan.FromHours(1).Ticks
+                    //MinStep = dateTimePoints.Min(dp => dp.DateTime).Ticks,
+                    MinStep = GetUnitWidthFromDuration(dateRange.GetDuration()),
+
+                }
+            };
+        }
+
+        private double GetUnitWidthFromDuration(TimeSpan duration)
+        {
+            //return duration.Ticks;
+            if (duration.Hours <= 23)
+            {
+                return TimeSpan.FromHours(1).Ticks;
+            }
+            else if (duration.Days <= 30)
+            {
+                return TimeSpan.FromDays(30.4375).Ticks;
+            }
+            return TimeSpan.FromDays(365.25).Ticks;
         }
 
         private void OnTextBoxLaptopPriceKeyPressed(object sender, KeyPressEventArgs e) => e.Handled = !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);

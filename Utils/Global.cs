@@ -87,5 +87,9 @@ namespace Logitop.Utils
                     return "Januari";
             }
         }
+
+        public static string PadLeft(int number) => number.ToString().PadLeft(2, '0');
+
+        public static string GetFormattedDate(DateTime date, bool withDayOfWeek = false, bool withMonthName = false) => $"{(withDayOfWeek ? $"{Global.TranslateDayOfWeek(date.DayOfWeek)}, " : "")}{PadLeft(date.Day)}{(withMonthName ? " " : "/")}{(withMonthName ? Global.TranslateMonth(date.Month) : PadLeft(date.Month))}{(withMonthName ? " " : "/")}{PadLeft(date.Year)} {PadLeft(date.Hour)}:{PadLeft(date.Minute)}:{PadLeft(date.Second)}";
     }
 }

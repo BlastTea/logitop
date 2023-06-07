@@ -6,6 +6,7 @@ using iText.Layout;
 using iText.Layout.Element;
 using iText.Layout.Properties;
 using Logitop.Models;
+using Logitop.Utils;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 
@@ -59,7 +60,7 @@ namespace Logitop.Services
                 // Set Id Transaksi
                 reportSheet.Cells[i + additionalRow, 1].Value = transaction.Id;
                 // Set Tanggal Transaksi
-                reportSheet.Cells[i + additionalRow, 2].Value = transaction.GetFormattedDate(withDayOfWeek: true, withMonthName: true);
+                reportSheet.Cells[i + additionalRow, 2].Value = Global.GetFormattedDate(transaction.Date, withDayOfWeek: true, withMonthName: true);
                 foreach (DetailTransaction detailTransaction in detailTransactions.Where((e) => e.Transaction.Id == transaction.Id))
                 {
                     // Set Nama Laptop

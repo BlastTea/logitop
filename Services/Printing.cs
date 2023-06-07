@@ -52,7 +52,7 @@ namespace Logitop.Services
                 y += AddNewLine(e, font, spacing);
                 e.Graphics!.DrawString($"{transactionArgs.Transaction.Id}/kasir".PadRight(maxLength), font, brush, GetCenterX(e, font, "".PadRight(maxLength, separator)), y);
                 y += AddNewLine(e, font, spacing);
-                e.Graphics!.DrawString($"{transactionArgs.Transaction.GetFormattedDate()}".PadRight(maxLength), font, brush, GetCenterX(e, font, "".PadRight(maxLength, separator)), y);
+                e.Graphics!.DrawString($"{Global.GetFormattedDate(transactionArgs.Transaction.Date)}".PadRight(maxLength), font, brush, GetCenterX(e, font, "".PadRight(maxLength, separator)), y);
                 y += AddNewLine(e, font, spacing);
                 e.Graphics!.DrawString("".PadRight(maxLength, separator), font, brush, GetCenterX(e, font, "".PadRight(maxLength, separator)), y);
                 y += AddNewLine(e, font, spacing);
