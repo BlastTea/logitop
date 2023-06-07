@@ -76,6 +76,9 @@
             dataGridReportTransaction = new DataGridView();
             columnReportIdTransaction = new DataGridViewTextBoxColumn();
             columnReportDateTransaction = new DataGridViewTextBoxColumn();
+            tabDiagram1 = new TabPage();
+            cartesianChart1 = new LiveChartsCore.SkiaSharpView.WinForms.CartesianChart();
+            tabDiagram2 = new TabPage();
             tabWeatherApi = new TabPage();
             labelCloudinessValue = new Label();
             labelCloudiness = new Label();
@@ -132,6 +135,7 @@
             tabLaporan.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewReportDetailTransaction).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridReportTransaction).BeginInit();
+            tabDiagram1.SuspendLayout();
             tabWeatherApi.SuspendLayout();
             tabPengaturan.SuspendLayout();
             SuspendLayout();
@@ -201,6 +205,8 @@
             tabControlHome.Controls.Add(tabLaptop);
             tabControlHome.Controls.Add(tabTransaksi);
             tabControlHome.Controls.Add(tabLaporan);
+            tabControlHome.Controls.Add(tabDiagram1);
+            tabControlHome.Controls.Add(tabDiagram2);
             tabControlHome.Controls.Add(tabWeatherApi);
             tabControlHome.Controls.Add(tabPengaturan);
             tabControlHome.Dock = DockStyle.Fill;
@@ -699,6 +705,35 @@
             columnReportDateTransaction.Name = "columnReportDateTransaction";
             columnReportDateTransaction.ReadOnly = true;
             columnReportDateTransaction.SortMode = DataGridViewColumnSortMode.NotSortable;
+            // 
+            // tabDiagram1
+            // 
+            tabDiagram1.Controls.Add(cartesianChart1);
+            tabDiagram1.Location = new Point(4, 34);
+            tabDiagram1.Name = "tabDiagram1";
+            tabDiagram1.Padding = new Padding(3);
+            tabDiagram1.Size = new Size(1414, 678);
+            tabDiagram1.TabIndex = 5;
+            tabDiagram1.Text = "Diagram 1";
+            tabDiagram1.UseVisualStyleBackColor = true;
+            // 
+            // cartesianChart1
+            // 
+            cartesianChart1.Dock = DockStyle.Fill;
+            cartesianChart1.Location = new Point(3, 3);
+            cartesianChart1.Name = "cartesianChart1";
+            cartesianChart1.Size = new Size(1408, 672);
+            cartesianChart1.TabIndex = 0;
+            // 
+            // tabDiagram2
+            // 
+            tabDiagram2.Location = new Point(4, 34);
+            tabDiagram2.Name = "tabDiagram2";
+            tabDiagram2.Padding = new Padding(3);
+            tabDiagram2.Size = new Size(1414, 678);
+            tabDiagram2.TabIndex = 6;
+            tabDiagram2.Text = "Diagram 2";
+            tabDiagram2.UseVisualStyleBackColor = true;
             // 
             // tabWeatherApi
             // 
@@ -1208,6 +1243,7 @@
             // 
             saveReportDialogAs.DefaultExt = "xlsx";
             saveReportDialogAs.Filter = "All files|*.*|Excel files (.xlsx)|*.xlsx|Pdf files (.pdf)|*.pdf";
+            saveReportDialogAs.FilterIndex = 2;
             // 
             // Homepage
             // 
@@ -1231,6 +1267,7 @@
             tabLaporan.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewReportDetailTransaction).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridReportTransaction).EndInit();
+            tabDiagram1.ResumeLayout(false);
             tabWeatherApi.ResumeLayout(false);
             tabWeatherApi.PerformLayout();
             tabPengaturan.ResumeLayout(false);
@@ -1335,5 +1372,8 @@
         private Button buttonTestPrint;
         private SaveFileDialog saveReportDialogAs;
         private Button buttonExportReport;
+        private TabPage tabDiagram1;
+        private TabPage tabDiagram2;
+        private LiveChartsCore.SkiaSharpView.WinForms.CartesianChart cartesianChart1;
     }
 }

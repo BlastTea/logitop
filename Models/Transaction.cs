@@ -28,7 +28,7 @@ namespace Logitop.Models
 
         public Dictionary<string, object> ToJson() => new Dictionary<string, object>
         {
-            { Global.ColumnTransactionDate,Date },
+            { Global.ColumnTransactionDate, Date },
             { Global.ColumnTransactionPay, pay }
         };
     }

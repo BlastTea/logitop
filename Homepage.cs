@@ -1,6 +1,10 @@
+using LiveChartsCore;
+using LiveChartsCore.Defaults;
+using LiveChartsCore.SkiaSharpView;
 using Logitop.Models;
 using Logitop.Services;
 using Logitop.Utils;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Text.Json;
 
@@ -39,6 +43,44 @@ namespace Logitop
                 comboBoxPaperSize.Items.Add(paperSize);
             }
             comboBoxPaperSize.Text = Printing.GetCurrentPaperSize();
+
+            cartesianChart1.Series = new ISeries[]
+            {
+                new ColumnSeries<DateTimePoint>
+                {
+                    Name = "Mary",
+                    Values = new ObservableCollection<DateTimePoint>
+                    {
+                        new DateTimePoint(new DateTime(2021, 1, 1), 3),
+                        // notice we are missing the day new DateTime(2021, 1, 2)
+                        new DateTimePoint(new DateTime(2021, 1, 2), 6),
+                        new DateTimePoint(new DateTime(2021, 1, 2), 5),
+                    },
+                }
+            };
+
+            cartesianChart1.XAxes = new Axis[]
+            {
+                new Axis
+                {
+                    Labeler = value => new DateTime((long) value).ToString("MMMM dd"),
+                    LabelsRotation = 80,
+
+                    // when using a date time type, let the library know your unit 
+                    UnitWidth = TimeSpan.FromDays(1).Ticks, 
+
+                    // if the difference between our points is in hours then we would:
+                    // UnitWidth = TimeSpan.FromHours(1).Ticks,
+
+                    // since all the months and years have a different number of days
+                    // we can use the average, it would not cause any visible error in the user interface
+                    // Months: TimeSpan.FromDays(30.4375).Ticks
+                    // Years: TimeSpan.FromDays(365.25).Ticks
+
+                    // The MinStep property forces the separator to be greater than 1 day.
+                    MinStep = TimeSpan.FromDays(1).Ticks
+                }
+            };
         }
 
         private void ReadLaptopData()
@@ -386,6 +428,8 @@ namespace Logitop
             SetTotalState();
             SetTransactionChangeState();
             textBoxTransactionPay.Clear();
+            ReadTransactionData();
+            SetTransactionState();
         }
 
         private void OnDataGridReportTransactionSelectionChanged(object sender, EventArgs e)
@@ -416,10 +460,7 @@ namespace Logitop
 
         private void OnComboBoxPaperSizeSelectedIndexChanged(object sender, EventArgs e) => Printing.SetCurrentPaperSize(comboBoxPaperSize.Text);
 
-        private void OnButtonTestPrintClick(object sender, EventArgs e)
-        {
-            Printing.Print(new PrintingArgumentsMessage("Hello World"));
-        }
+        private void OnButtonTestPrintClick(object sender, EventArgs e) => Printing.Print(new PrintingArgumentsMessage("Hello World"));
 
         private void OnButtonExportReportClick(object sender, EventArgs e)
         {
